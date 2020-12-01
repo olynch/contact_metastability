@@ -1,0 +1,3 @@
+[submodule "latexrc"]
+	path = latexrc
+	url = git@github.com:olynch/latexrc
