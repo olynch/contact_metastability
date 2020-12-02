@@ -1,14 +1,15 @@
 \documentclass{scrartcl}
 \usepackage{latexrc/macros}
-\title{Report on Metastability for the Contact Process}
+\title{Metastability for the Contact Process on $\integer$}
 \author{Owen Lynch \and Kacper Urbansky}
+\DeclareMathOperator{\expDist}{Exp}
 \begin{document}
 
 \maketitle
 
 \section{Overview}
 
-The essential idea of metastability is that, as some parameter goes to infinity, we can coarse grain a Markov process into something that looks like the Markov process in \fref{fig:metastability_nutshell}.
+The essential idea of metastability is that, as some parameter goes to infinity, we can ``coarse-grain'' a Markov process $\xi_{t}$ into something that looks like the Markov process in \fref{fig:metastability_nutshell}.
 
 \begin{figure}[h!]
   \centering
@@ -17,11 +18,72 @@ The essential idea of metastability is that, as some parameter goes to infinity,
   \ref{fig:metastability_nutshell}
 \end{figure}
 
-The system begins in the so-called ``metastable state'', and after an exponential random time, transitions into the stable state. The stable state is either absorbing, or close-to absorbing; in the case that we will talk about in this paper, the stable state is absorbing.
+The system begins in the so-called ``metastable state'', and has a very small chance to move to the stable state at any time. The stable state is either absorbing, or close-to absorbing; in the case that we will talk about in this paper, the stable state is absorbing.
 
-There are two key features of
+In order to make this ``coarse-graining'' happen, we need two things to be true asymptotically.
+
+\begin{enumerate}
+  \item The hitting time of the stable state is exponentially distributed.
+  \item Up until the hitting time, temporal means of measurements made to the process converge to a stationary distribution.
+\end{enumerate}
+
+Together, these two properties intuitively allow us to approximate the entire process by sampling from the stationary distribution up until the hitting time, and then putting the system in the absorbing state after the hitting time.
+
+The difficulty comes in stating these two properties precisely. To do this, suppose that $N$ is the parameter of the system that goes to $\infty$, (i.e. we have a collection of processes $\xi_{N}(t)$), $T_{N}$ is the hitting time of the absorbing state, $\mu$ is the stationary distribution, and $R_{N}$ is a ``time scale'' parameter that satisfies $R_{N}/\E T_{N} \to 0$. Then we rewrite the two properties more formally as
+
+\begin{enumerate}
+  \item $T_{N} / \E T_{N} \to \expDist(1)$ in distribution as $N \to \infty$.
+  \item For any $f$,
+    \[ \int_{S}^{S + R_{N}} f(\xi_{N}(t)) \d{t} \to \mu(f) \]
+    as $N \to \infty$, for any $S + R_{N} < T_{N}$.
+\end{enumerate}
+
+This second statement is still very imprecise, and actually mathematically meaningless as currently posed. Also, it turns out that we want a much stronger statement than that. However, we hope that this first statement should ``innoculate'' the reader to the precise statement, which is fairly dense on its own.
 
 \section{Review of Contact Process}
+
+The contact process on $\integer$ can be defined by the Markov pregenerator $L$ with domain cylindrical functions $2^{\integer} \to \real$ given by
+\begin{equation}
+  \label{eq:contact_generator}
+  Lf(\eta) = \sum_{x \in \integer} c(x,\eta) (f(\eta^{x}) - f(\eta))
+\end{equation}
+where
+\begin{equation*}
+  c(x,\eta) = \begin{cases}
+    1 & \qif* \eta(x) = 1 \\
+    λ(\eta(x-1) + \eta(x+1)) & \qif* \eta(x) = 0
+  \end{cases}
+\end{equation*}
+$\lambda$ is the single parameter for the contact process; we will discuss this more later.
+
+However, there is an alternative definition that lends itself better to certain constructions that are useful in proofs.
+
+First we construct a ``percolation structure'', which consists of for each $x \in \integer$
+\begin{enumerate}
+  \item A poisson process $P_{x}$ with rate 1, which we call the ``death'' process at $x$.
+  \item A poisson process $P_{x \to x+1}$ with rate $\lambda$, which we call the ``right infection'' process at $x$.
+  \item A poisson process $P_{x \to x-1}$ with rate $\lambda$, which we call the ``left infection'' process at $x$.
+\end{enumerate}
+
+We consider $P_{x}$ to be a random element of $\powerset(\real)$, i.e. $t \in P_{x}$ if and only if the poisson process ``ticks'' at time $t$.
+
+\begin{figure}[h!]
+  \centering
+  % TODO
+  \caption{Example Percolation Structure}
+  \label{fig:ex_perc_structure}
+\end{figure}
+
+We define a ``path'' between $(x,s), (y,t) \in \integer \by \real$ with $s \leq t$ to be a sequence
+$(z_{0},r_{0}), \ldots, (z_{n},r_{n})$ with $r_{i} \leq r_{i+1}$ such that for all $(z_{i},r_{i}),(z_{i+1},r_{i+1})$, either
+\begin{enumerate}
+  \item $r_{i} = r_{i+1}$, $\abs{z_{i} - z_{i+1}} = 1$, and $r_{i} \in P_{z_{i} \to z_{i+1}}$. In this case, we are jumping laterally by one line at a time of infection.
+  \item $z_{i} = z_{i+1}$, and $[r_{i},r_{i+1}] \cap P_{z_{i}} = \emptyset$. In this case, we are moving along a vertical line that has no deaths in it.
+\end{enumerate}
+
+Then $\xi^{A}(t)$ is the set of $y$ such that there is a path from $(x,0)$ to $(y,t)$ for some $x \in A$. If the superscript is omitted, then we assume $A = \integer$, i.e. $\xi(t) = \xi^{\integer}(t)$.
+
+For any $A \ins B$, we define $\xi_{B}^{A}(t)$ to be the set of $y$ such that there is a path from $(x,0)$ to $(y,t)$ for some $x \in A$ that stays entirely within $B$. As a special case, we let $\xi_{N}^{A}(t) = \xi_{[-N,N]}^{A}$, for $N \in \natural$. Note that $\xi_{B}$ takes values exclusively in $\powerset(B)$.
 
 \section{Hitting Time of Stable State}
 
