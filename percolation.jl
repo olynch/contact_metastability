@@ -83,6 +83,9 @@ struct PercResult
     rinfects = [[] for i in 1:n]
     new(ints,linfects,rinfects)
   end
+  function PercResult(ints::Vector{AliveIntervals},linfects::Vector{Vector{Float64}},rinfects::Vector{Vector{Float64}})
+    new(ints,linfects,rinfects)
+  end
 end
 
 alive(pr::PercResult, site::Int64) = length(pr.ints[site]) > 0 && pr.ints[site][end][2] == nothing
@@ -99,19 +102,19 @@ function kill(pr::PercResult,site::Int64,t::Float64)
   end
 end
 
-function reverse_int(int::AliveInterval)
+function reverse_int(int::AliveInterval, T::Float64)
   if int[2] == nothing
-    (0,int[1])
+    (0,T - int[1])
   else
-    (int[2],int[1])
+    (T - int[2],T - int[1])
   end
 end
 
 function reverse_pr(pr::PercResult,T::Float64)
   PercResult(
-    reverse_int.(pr.ints),
-    [[] ; (T .- pr.rinfects)[1:end-1]],
-    [(T .- pr.linfects)[2:end] ; []]
+    Vector{AliveIntervals}(map(is -> reverse(reverse_int.(is,T)), pr.ints)),
+    Vector{Vector{Float64}}([[[]] ; map(ri -> reverse(T .- ri), pr.rinfects)[1:end-1]]),
+    Vector{Vector{Float64}}([map(li -> reverse(T .- li), pr.linfects)[2:end] ; [[]]])
   )
 end
 
@@ -146,12 +149,23 @@ struct AnimParams
   width::Float64
   height::Float64
   frames::Int64
+  function AnimParams(pr::PercResult,perc::Perc,T::Float64,w::Float64,h::Float64,fr::Int64)
+    new(pr,perc,T,w,h,fr)
+  end
   function AnimParams(init::BitVector, T::Float64, λ::Float64, width::Float64, height::Float64, frames::Int64)
     n = length(init)
     perc = Perc(n,T,λ)
     pr = simulate_pr(init, T, perc)
     new(pr,perc,T,width,height,frames)
   end
+end
+
+function reverse_pr(ap::AnimParams)
+  n = length(ap.pr.ints)
+  rev_perc = reverse_perc(ap.perc, ap.T)
+  rev_init = BitVector(map(i -> alive(ap.pr,i), 1:n))
+  rev_pr = reverse_pr(simulate_pr(rev_init, ap.T, rev_perc),ap.T)
+  AnimParams(rev_pr,ap.perc,ap.T,ap.width,ap.height,ap.frames)
 end
 
 function draw_intervals(ap::AnimParams,cur_t::Float64)
