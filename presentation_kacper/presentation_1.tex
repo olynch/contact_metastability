@@ -79,6 +79,8 @@
 
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{amsmath} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{xcolor}
 \newcommand{\norm}[1]{{\left\lVert#1\right\rVert}}
 
 %----------------------------------------------------------------------------------------
@@ -199,7 +201,7 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \begin{frame}
     Take our \textbf{fixed probability distribution} to be $\mu$ (i.e. the non-zero invariant measure of the contact process in the supercritical regime). \\~\\
 
-    Then, we can define \textbf{expectation of observable quantity} w.r.t to this probability distribtuion as $\mu(f)$
+    Then, we can define \textbf{expectation of observable quantity} w.r.t to this probability distribtuion as $\mu(f) := \int fd\mu$ (I will call this quantity simply ``expectation'').
 \end{frame}
 
 \begin{frame}
@@ -235,14 +237,14 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \end{frame}
 
 \begin{frame}
-    Obviously, we want to choose $s$ such that the process $\xi_N$ is still alive. Otherwise our temporal mean would indeed be far from the expectation. Thus, we want to start measuring at
+    Obviously, we want to choose $s$ such that the process $\xi_N(s+R_N)$ is still alive. Otherwise our temporal mean would indeed be far from the expectation. Thus, we want to start measuring at
         $s$ such that $R_N + s < T_N$. \\~\\
 
         Would saying that there exists $s$ such that our convergence in probability holds be sufficient? \\~\\\textcolor{white}{It would be a bit weak. We'd then say that the observer needs to start measuring at a very particular $s$ to observe that our temporal mean is close to the expectation. This is hard to satisfy, so 
         we need something stronger.}
 \end{frame}
 \begin{frame}
-    Obviously, we want to choose $s$ such that the process $\xi_N$ is still alive. Otherwise our temporal mean would indeed be far from the expectation. Thus, we want to start measuring at
+    Obviously, we want to choose $s$ such that the $\xi_N(s+R_N)$ is still alive. Otherwise our temporal mean would indeed be far from the expectation. Thus, we want to start measuring at
         $s$ such that $R_N + s < T_N$. \\~\\
 
         Would saying that there exists $s$ such that our convergence in probability holds be sufficient? \\~\\
@@ -294,13 +296,27 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \end{frame}
 
 \begin{frame}
-    Turns out that we need the following technicality: we need to choose $L(\varepsilon, f)$, and we need to have that
+    Turns out that we need the following technicality: we need to choose $L(\varepsilon, f) \in \mathbb{N}$, and we need to have that
     \begin{itemize}
         \item $L < N$
         \item $\Lambda(f) := supp(f) \subset [-N + L, N - L] \cap \mathbb{Z}$
     \end{itemize}
      Notice that $L$ does not depend on $N$. Thus, having to choose this $L$ doesn't restrict our choice of $f$ - it merely sets the minimum
      $N$ we can consider and we chose to grow $N \rightarrow \infty$.
+    \\~\\
+    We can partition the main interval as follows:
+    \begin{itemize}
+        \item $[-N, -N+L)$ - \textbf{left boundary region}
+        \item $[-N+L, N-L]$ - \textbf{inside region}
+        \item $(N-L, N]$ - \textbf{right boundary region}
+    \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.15]{./img/regions_df.png}
+        \caption{Example of $K_N$}
+        \label{fig:regions}
+    \end{figure}
 \end{frame}
 
 \subsection{Statement of the theorem} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
@@ -325,31 +341,21 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 
 \begin{frame}
     \frametitle{Proof}
-    \[K_N = \max\{k \in \mathbb{N}_0: kR_N < T_N\}\]
-    As a consequence of Theorem 1, and the requirement $R_N/\beta_N \rightarrow 0$ we have that
-    $\mathbb{P}(K_N = 0) \rightarrow 0$.  \\~\\
-
-    Thus, we can safely focus only on the subset of $\Omega$ where $K_N \geq 1$. \\~\\
-
-    In other words we're almost guaranteed to be able to fit at least one measurement between time $0$ and when the process dies.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Proof}
     Set 
     \[B^N_k = \left\{ |A_{R_N}(kR_N, f) - \mu(f)| > \varepsilon\right\}\]
     On $B^N_k$ the difference between temporal mean of observalbe measured over the $k$-th interval and its expectation is greater than we'd like to.
     $B^N_k$~means \textbf{failure} (in $k$-th interval).
     \\~\\
-    We want the probability of having failure in at least 1 interval to go to 0
-    \[\left\{\max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, f) - \mu(f)| > \varepsilon  \right\} = \bigcup_{\mathbb{N}_0 \ni k < K_N}B_k \]
-    In other words, we want the probability of having no failures to go to 1
-    \[\left\{\max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, f) - \mu(f)| \leq \varepsilon  \right\} = \bigcap_{\mathbb{N}_0 \ni k < K_N}B_k^C \]
+    We want the probability of having no failures to go to 1
+    \[\mathbb{P}\left[ \max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, f) - \mu(f)| \leq \varepsilon   \right] =
+    \mathbb{P}\left[ \bigcap_{\mathbb{N}_0 \ni k < K_N}B_k^C \right] \rightarrow 1 \]
+    as $N\rightarrow\infty$
 \end{frame}
 
 \begin{frame}
     \frametitle{Proof}
-    Recall that we can safely focus on $K_N \geq 1$. After some simple algebra, we we get the following bound
+    It is easy to show that $\mathbb{P}(K_N = 0) \rightarrow 0$. Thus, we can safely focus only on the subset of $\Omega$ where $K_N \geq 1$. \\~\\
+    Combining this with the event from the previous slide and applying some simple algebra, we arrive at the following bound
     \begin{align*}
         \mathbb{P}\left[ K_N \geq 1,  \bigcap_{\mathbb{N}_0 \ni k < K_N}B_k^C \right]
          \geq  \mathbb{P}[1 \leq K_N \leq m] - m^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B_k, K_{N} = j \right]
@@ -365,23 +371,32 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \begin{frame}
     \frametitle{Proof}
     We will start with the second term. However, first we need some intermediate results. We will say $\xi_N(t)$ is \textbf{wide} at $t$ if 
+    it intersects both boundary regions. In other words:
     \[
         \min\xi_N(t) < -N + L \land \max\xi_N(t) > N - L
     \]
-    Call \begin{itemize}
-        \item $[-N, -N+L]$ to be \textbf{left boundary region}
-        \item $[N-L, N]$ \textbf{right boundary region}
-        \item $[-N+L, N-L]$ \textbf{inside region}
-    \end{itemize}
-    A process is wide at $t$ if it intersects both boundary regions.
+    We will call the process \textbf{narrow} otherwise.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.15]{./img/wide_process.png}
+        \caption{Snapshot at $t$ of a process wide at $t$}
+        \label{fig:wide_process}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.15]{./img/narrow_proces.png}
+        \caption{Snapshot at $t$ of a process narrow at $t$}
+        \label{fig:narrow_process}
+    \end{figure}
 
+\end{frame}
+\begin{frame}
+    \frametitle{Proof}
     \begin{lemma}[Shielding by a wide process]
-        If $\xi_N(t)$ is wide at $t$, $\xi_N(t) = \xi(t)$ on $[-N + L, N - L] \cap \mathbb{Z}$.\\
+        If $\xi_N(t)$ is wide at $t$, then \[\xi_N(t) = \xi(t)\text{ on }[-N + L, N - L] \cap \mathbb{Z}\]\\
         In particular we have $f(\xi_N(t)) = f(\xi(t))$
     \end{lemma}
-
-
-    Why? \\~\\
+    Why would this be true? \\~\\
 \end{frame}
 
 \begin{frame}
@@ -391,11 +406,30 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 
 \begin{frame}
     \frametitle{Proof}
-    Moreover, define $h_L(\eta) = I_{\{\xi : \xi \cup [-N, -N+L] = \varnothing\}}$. $h_L(\eta)$ tells us whether a process intersects the left boundary region.
-    $h_L$ can also tell us if a process intersects the right boundary region: we simply need to flip the process before feeding it to $h_L$.
+    Define \[h_L(\eta) = I_{\{\xi : \xi \cup [-N, -N+L] = \varnothing\}}\]
+    Notice that $h_L$ can tell us whether a process is wide or not.
+    If we take $S$ to be a horizontal flip operator, then $h_L(\xi_N(t))h_L(S\xi_N(t))$ is the desired indicator.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.15]{./img/narrow_flip_ex_1.png}
+        \caption{$h_L(\xi_N(t)) = 1$}
+        \label{fig:narrow_flip_1}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.15]{./img/narrow_flip_ex_2.png}
+        \caption{$h_L(S\xi_N(t)) = 0$}
+        \label{fig:narrow_flip_2}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}
     \begin{lemma}[Shielding of the left boundary region]
         \[\{T_N > t\} \subset \{h_L(\xi_N(t)) = h_L(\xi_{[-N, \infty)}(t))\}\]
     \end{lemma}
+    In other words, if $\xi_N(t)$ is still alive, it fully determines whether $\xi_{[-N, \infty)}(t)$ intersects the left boundary region.
+    \\~\\
     Why would this be true?
     \begin{itemize}
         \item If $\xi_N(t)$ intersects left boundary region, $\xi_{[-N, \infty)}$ intersects it too
@@ -405,7 +439,7 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \end{frame}
 
 \begin{frame}
-    GIF SHOWING WHAT I MEAN
+    GIF
 \end{frame}
 
 \begin{frame}
@@ -423,48 +457,148 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \[
         \left|A_{R_N}(kR_N, f) - \mu(f)\right| > \varepsilon \rightarrow
     \]
-    \[
-        \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| + \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon
-    \]
     \begin{gather*}
-        \rightarrow \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2 \ \ \lor \\\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2
+        \rightarrow \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \ \ \lor \\
+        \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2
     \end{gather*}
 
 \end{frame}
 
 \begin{frame}
     \frametitle{Proof}
-    Let's look a the first term in the alternative.
+    Let's take the first term in the alternative and try to find a bound for
+
+    \[
+        \mathbb{P}\left[ \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \right]
+    \]
+
+    It looks like we could almost apply weak convergence here, but we there's something missing\dots \\~\\ 
+    Weak convergence to $\mu(f)$ as $R \rightarrow \infty$ holds for
+    \[
+        R_N^{-1}\int_{kR_N}^{(k+1)R_N}\mathbb{E}\left[ f(\xi(t)) \right]dt
+    \]
+
+    If we can now find a way to bind what's below, we're in business!
+    \[
+        \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t)) - \mathbb{E}\left[ f(\xi(t)) \right]dt > \varepsilon/4 \right|\right]
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof}
+    Turns out there is indeed a way to do that. This has to do with the fact that time correlations of $\xi(t)$ decay exponentially fast:
+    \begin{theorem}[Exponentially decaying correlations]
+        For any $f : \{0,1\}^\mathbb{Z}\rightarrow \mathbb{R}$ local, there are constants $C, \gamma$ such that 
+        \[
+            \left|\mathbb{C}ov\left[ f(\xi(t)), f(\xi(s))\right]\right| \leq Ce^{-\gamma|s-r|}
+        \]
+    \end{theorem}
+    \visible<2->{
+        Now, consider the variance of the expression from the previous slide:
+        \[
+            \mathbb{E}\left[  \left(R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t)) - \mathbb{E}\left[ f(\xi(t)) \right]dt \right)^2 \right]
+        \]
+    }
+    \begin{itemize}
+        \item<3-> Looks very much like we could get an expression for a covariance from this! 
+        \item<4-> Then, Chebyshev will finish out our job for us.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof}
+    Recall, we've had:
+
+    \begin{gather*}
+        \mathbb{P}\left[ B_k, K_{N} = j \right] \leq \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \right] + \\
+        \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2\right]
+    \end{gather*}
+
+    We managed to bind the 1st term using:
+    \begin{itemize}
+        \item Weak convergence
+        \item Exponentially decaying correlations + Chebyshev
+    \end{itemize}
+
+    Will this go through for the 2nd term?
+    \begin{itemize}
+        \item Weak convergence is a no-go. $\xi_N(t)$ converges weakly to $\delta_0$, but it does so at $\beta_N$ timescale, which is supposed to be large compared with $R_N$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof}
+    Let's massage the second term to see if we can get rid of $\xi_N$.
 
     \[
         \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2 
     \]
 
-    Recall that if $\xi_N$ is wide at $t$, we have $f(\xi_N(t)) = f(\xi(t))$. Thus only $t$ for which $\xi_N(t)$ is not wide will contribute to the intergral. Hence the former implies
+    Recall that 
+    \begin{itemize}
+        \item If $\xi_N$ is wide at $t$, we have $f(\xi_N(t)) = f(\xi(t))$ (shielding by a wide process). 
+        \item We can use $h_L$ to tell whether a process is wide or not
+        \item $\xi_N$ is alive for all $t$ we're considering. Hence $h_L(\xi_N(t)) = h_L(\xi_{[-N,\infty)}(t))$ (shielding of the left boundary region).
+    \end{itemize}
+    We get that the condition above implies
 
     \[
-        2\norm{f}R_N^{-1}\int_{kR_N}^{(k+1)R_N}\varphi(f(\xi_N(t)))dt > \varepsilon/2
-    \]
-    
-    Where $\varphi$ is the indicator taking value $1$ when $\xi_N(t)$ is not wide. A process which is not wide does not intersect neither left nor right boundary region. Thus we have
-
-    \[
-        2\norm{f}R_N^{-1}\int_{kR_N}^{(k+1)R_N}h_L(\xi_N(t)) + h_L(S\xi_N(t))dt > \varepsilon/
+        2\norm{f}R_N^{-1}\int_{kR_N}^{(k+1)R_N}h_L(\xi_{[-N, \infty)}(t)) + h_L(S\xi_{(-\infty, N]}(t))dt > \varepsilon/2
     \]
 \end{frame}
 
 
-%------------------------------------------------
+\begin{frame}
+    \frametitle{Proof}
+    By symmetry,
+    \begin{gather*}
+        \mathbb{P}\left[  2\norm{f}R_N^{-1}\int_{kR_N}^{(k+1)R_N}h_L(\xi_{[-N, \infty)}(t)) + h_L(S\xi_{(-\infty, N]}(t))dt > \varepsilon/2 \right] \leq \\
+        2\mathbb{P}\left[ 2\norm{f}R_N^{-1}\int_{kR_N}^{(k+1)R_N}h_L(\xi_{[-N, \infty)}(t)) > \varepsilon/4 \right]
+    \end{gather*}
+    This form is something we could use the previous ``machinery'' (weak convergence + covariance + chebyshev) on, but:
+    \begin{itemize}
+        \item That method would us to make the time average arbitrarily close to $\mu(h_L)$, here we need to make it close to 0\dots
+        \item Solution: make $\mu(h_L)$ close to 0! We can still vary $L$!
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
-\frametitle{Bullet Points}
-\begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
-\end{itemize}
+    \frametitle{Proof}
+    Set $L$ to be such that 
+    \[
+        \mu_{[0, \infty)}\left( \left\{ A : A \cup [0,L] = \varnothing \right\} \right) \leq \varepsilon/16\norm{f}
+    \]
+    Notice how we have used that $\mu_{[0, \infty)}$ is translation invariant. Defining $L$ in this way makes it independent of $N$, as we wanted.
+    Surprising, eh?
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof}
+    We've arrived at
+
+    \[
+        \mathbb{P}\left[ B^N_k, K_N = j \right] \leq \mathbb{P}\left[\Gamma_k^{R_N}\right] + 2\mathbb{P}\left[\tilde{\Gamma}_k^{R_N, L}\right]
+    \]
+
+    Where
+
+    \[
+        \Gamma_k^{R_N} := \left\{  \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2\right\}
+    \]
+
+    \[
+        \tilde{\Gamma}_k^{R_N} := \left\{  2\norm{f}R_N^{-1}\int_{kR_N}^{(k+1)R_N}h_L(\xi_{[-N, \infty)}(t)) > \varepsilon/4\right\}
+    \]
+
+    Formally, our previous considerations give us (for appropriate $R_N$, $L$)
+
+    \[
+        \mathbb{P}\left[ B^N_k, K_N = j \right] \leq \mathbb{P}\left[\Gamma_k^{R_N}\right] + 2\mathbb{P}\left[\tilde{\Gamma}_k^{R_N, L}\right] \leq C/R_N
+    \]
+\end{frame}
+
+\begin{frame}
+    \frametitle{Proof}
 \end{frame}
 
 %------------------------------------------------
