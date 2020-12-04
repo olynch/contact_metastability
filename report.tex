@@ -3,6 +3,7 @@
 \title{Metastability for the Contact Process on $\integer$}
 \author{Owen Lynch \and Kacper Urbansky}
 \DeclareMathOperator{\expDist}{Exp}
+\newcommand{\ep}{\varepsilon}
 \begin{document}
 
 \maketitle
@@ -41,6 +42,8 @@ The difficulty comes in stating these two properties precisely. To do this, supp
 This second statement is still very imprecise, and actually mathematically meaningless as currently posed. Also, it turns out that we want a much stronger statement than that. However, we hope that this first statement should ``innoculate'' the reader to the precise statement, which is fairly dense on its own.
 
 \section{Review of Contact Process}
+
+\subsection{Basic Definitions}
 
 The contact process on $\integer$ can be defined by the Markov pregenerator $L$ with domain cylindrical functions $2^{\integer} \to \real$ given by
 \begin{equation}
@@ -85,7 +88,118 @@ Then $\xi^{A}(t)$ is the set of $y$ such that there is a path from $(x,0)$ to $(
 
 For any $A \ins B$, we define $\xi_{B}^{A}(t)$ to be the set of $y$ such that there is a path from $(x,0)$ to $(y,t)$ for some $x \in A$ that stays entirely within $B$. As a special case, we let $\xi_{N}^{A}(t) = \xi_{[-N,N]}^{A}$, for $N \in \natural$. Note that $\xi_{B}$ takes values exclusively in $\powerset(B)$.
 
+\subsection{Useful Properties}
+
+One of the most important facts about the contact process is that there is a critical value of $\lambda$, $\lambda_{c}$. For $\lambda < \lambda_{c}$, $\xi(t)$ has unique extremal invariant measure $\delta_{\emptyset}$, but for $\lambda > \lambda_{c}$, $\xi(t)$ has another extremal invariant measure $\mu$ defined by
+\[ \mu(f) = \limas_{T \to \infty} \frac{1}{T} \int_{0}^{T} \E f(\xi(t)) \dd{t} \]
+and this measure is not concentrated at $\emptyset$.
+
+For $\xi_{N}(t)$, the only invariant measure is $\delta_{\emptyset}$, because $\emptyset$ is a trap and $\xi_{N}$ takes values on a finite state space. However, as mentioned before, we will see later on that $\xi_{N}(t)$ \emph{approximately} has invariant measure $\mu$ all the way up until it reaches $\emptyset$.
+
+TODO: give brief explanations for each of these.
+
+\begin{proposition}
+  $\Prob(\xi(t) \cap A \neq \emptyset)$ monotonically decreases to $\mu(\eta \st \eta \cap A \neq \emptyset)$.
+\end{proposition}
+
+\begin{proposition}
+  The contact process is \emph{self-dual}.
+\end{proposition}
+
+\begin{corollary}
+  $\Prob(\xi^{A}(s) \neq \emptyset, \forall s \geq 0) = \mu(\eta \st \eta \cap A \neq \emptyset)$
+\end{corollary}
+
+\begin{proposition}
+  Let $\rho = \Prob(\xi^{\set{0}}(s) \neq \emptyset) = \mu(\eta \st \eta(0) = 1)$, if $\lambda$ is the parameter for $\xi$. Then if $\lambda > \lambda_{c}$ then $\rho > 0$. This will later be an important quantity for proofs.
+\end{proposition}
+
+\begin{proposition}
+  $\mu$ is translation-invariant, and even better, ergodic under translations. This means that one can approximate $\mu(f)$ by averaging $\E \tau_{i}f(\xi(t))$ over a large number of $i$, where $\tau_{i}f(\eta)$ is $f$ applied to $\eta$ shifted by $i$. Finally, $\mu$ has exponentially decaying correlations; that is if $\set{X_{i}}_{i \in \integer}$ is distributed according to $\mu$, then the correlation between $X_{i}$ and $X_{j}$ decays exponentially with $\abs{i - j}$.
+\end{proposition}
+
 \section{Hitting Time of Stable State}
+
+\begin{theorem}
+  If $T_{N} = \inf\set{t > 0 \st \xi_{N}(t) \neq \emptyset}$, then
+  \[ \frac{T_{N}}{\E T_{N}} \to \expDist(1) \]
+  in distribution.
+\end{theorem}
+
+Without further ado, we get down to the proof. First of all, we replace $\E T_{N}$ by the unique (by monotonicity) $\beta_{N}$ such that $\Prob(T_{N} > \beta_{N}) = \e^{-1}$. At the end, we will show that $\frac{\E T_{N}}{\beta_{N}} \to 1$.
+
+Now let $G_{N}(t) = \Prob[\frac{T_{N}}{\beta_{N}} > t]$, the CDF of $T_{N}/\beta_{N}$. Similarly, let $G_{N}^{A}(t) = \Prob[\frac{T^{A}_{N}}{\beta_{N}} > t]$. Note that $G_{N}^{A}(t) \leq G_{N}(t)$ To show that $T_{N}/\beta_{N}$ converges in distribution to $\expDist(1)$, we must show that $G_{N}(t) \to \e^{-t}$. This can be accomplished by showing that
+\[ \limas_{N \to \infty} \abs{G_{N}(t+s) - G_{N}(t)G_{N}(s)} = 0 \]
+for all $t,s > 0$.
+
+Note that $G_{N}(t) = \Prob[\xi_{N}(t) \neq \emptyset]$, as $\xi_{N}$ is ``alive'' at time $t$ if and only if $T_{N} > t$. Thus,
+
+\begin{align*}
+  G_{N}(t+s) &= \Prob[\xi_{N}(t+s) \neq \emptyset] \\
+             &= \sum_{A \neq \emptyset} \Prob[\xi_{N}(t+s) \neq \emptyset | \xi_{N}(t) = A] \Prob[\xi_{N}(t) = A] \\
+             &= \sum_{A \neq \emptyset} G_{N}^{A}(s) \Prob[\xi_{N}(t) = A] \\
+             &\leq G_{N}(s) \sum_{A \neq \emptyset} \Prob[\xi_{N}(t) = A] \\
+             &= G_{N}(s) G_{N}(t)
+\end{align*}
+
+Therefore, we are looking to show that $G_{N}(s) G_{N}(t) - G_{N}(t+s) \to 0$ (we can forget the absolute value signs).
+
+It is at this point that we introduce a curious little construction, which seems to not make much sense at first but turns out to be the key to the entire proof. Define $F_{b}$ for $b > 0$ by
+
+\[ F_{b} = \set{A \ins \integer \st \frac{\abs{A \cap [-b,-1]}}{b} > frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} > frac{\rho}{2}} \]
+
+Recall that $\rho$ was defined in \ref{prop:rho_lambda} to be the probability that $\xi^{\set{0}}$ never dies. The intuition that the reader should hold for $F_{b}$ is that it is the set of $A$ that are ``sufficiently dense'' on $[-b,-1]$ and $[1,b]$ so that $\xi^{A}_{N}$ behaves just like $\xi_{N}$. The reason we have this ``two-sided'' condition is that we will use the processes $\xi_{(-\infty,N)}$ and $\xi_{(-N,\infty)}$, which have invariant measure $\mu$ as well, to talk about $\xi_{N}$.
+
+Now, by similar reasoning as before,
+\begin{align*}
+  G_{N}(t+s) &= \sum_{A \neq \emptyset} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) = A] \\
+  &\geq \sum_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) = A] \\
+  &\geq \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}]
+\end{align*}
+(We assume that $A \ins [-N,N]$ when such an assumption is necessary).
+
+Therefore,
+\begin{align*}
+  G_{N}(t)G_{N}(s) - G_{N}(t+s) \leq& \; G_{N}(t)G_{N}(s) - \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}] \\
+  =& \; G_{N}(s)(G_{N}(t) - \min_{A \in F_{b}} G_{N}^{A}(t)) \\
+                                 &+ \min_{A \in F_{b}} G_{N}^{A}(t)(G_{N}(s) - \Prob[\xi(\beta_{N}s) \in F_{b}]) \\
+  \leq& \; (G_{N}(t) - \min_{A \in F_{b}} \Prob[\xi_{N}^{A}(\beta_{N}t) \neq \emptyset]) \\
+                                 &+ \Prob[\xi_{N}(\beta_{N}s) \neq \emptyset, \xi_{N}(\beta_{N}s) \notin F_{b}]
+\end{align*}
+
+We will have finished if for any $\ep > 0$, we can find $b(\ep)$ and $N(\ep) > b(\ep)$  such that for $N \geq N(\ep)$ and $A \in F_{b}$, we have both
+\begin{align}
+  G_{N}(t) - G_{N}^{A}(t) &< \ep \label{eq:firstineq} \\
+  \Prob[\xi_{N}(\beta_{N}s) \neq \emptyset, \xi_{N}(\beta_{N}s) \notin F_{b}] &< \ep \label{eq:secondineq}
+\end{align}
+
+We tackle \eref{eq:firstineq} first. Remember that $\xi_{N}(t)$ and $\xi_{N}^{A}$ are defined on the same percolation structure. Therefore, $\xi_{N}(t) \supset \xi_{N}^{A}(t)$, so we have
+\[ \Prob[\xi_{N}(\beta_{N} t) \neq \emptyset] - \Prob[\xi_{N}(\beta_{N} t) \neq \emptyset] = \Prob[\xi_{N}(\beta_{N} t) \neq \emptyset, \xi_{N}^{A}(\beta_{N} t) = \emptyset] \leq \Prob[T_{N} \neq T_{N}^{A}] \]
+The intuition for why the right hand side of this is small is that once $\xi_{N}(t_{0}) = \xi_{N}^{A}(t_{0})$, then for all $t > t_{0}$, $\xi_{N}(t) = \xi_{N}^{A}(t)$. Therefore, as long as the event $\xi_{N}(t_{0}) = \xi_{N}^{A}(t_{0})$ happens before $T_{N}^{A}$, we will have $T_{N}^{A} = T_{N}$. Let $E$ be this event; we must show that $\Prob(E) > 1 - \ep$.
+
+As $\lambda > \lambda_{c}$, we can find $n(\ep)$ such that
+\[ \mu(B \st B \cap [1,n(\ep)] = \emptyset) \leq \frac{\ep}{2} \]
+
+Then take $b = b(\ep)$ such that $n(\ep) \leq b \cdot \rho/2$. For $A \in F_{b}$, $\abs{A \cap [-b,-1]} \geq b \cdot \rho/2 \geq n(\ep)$, so
+\[ \Prob[T_{[-N,\infty)}^{A \cap [-b,-1]} = \infty] \geq \Prob[T_{[-N,\infty]}^{[-N,\ldots,-N+n(\ep)]} = \infty] \geq 1 - \frac{\ep}{2} \]
+TODO give argument for the first inequality. The second inequality follows from duality and monotone convergence.
+
+Similarly, $\Prob[T_{(-\infty,N]}^{A \cap [1,b]} = \infty] \geq 1 - \frac{\ep}{2}$. Let $E'$ be the event that both of these stopping times are infinite; clearly $P(E') \geq 1 - \ep$. It remains to show that $E \supset E'$.
+
+Define stopping times
+\begin{align*}
+  U &= \inf\set{t > 0 \st N \in \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)} \\
+  V &= \inf\set{t > 0 \st -N \in \xi_{(-\infty,N]}^{A \cap [1,b]}(t)}
+\end{align*}
+Until $U$, $\xi_{N}^{A \cap [-b,-1]}(t) = \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)$. Therefore, on $E'$, $\xi_{N}^{A \cap [-b,-1]}(t)$ is alive up until $U$, whence $\xi_{N}^{A}$ is alive up until $U$. Similarly, $\xi_{N}^{A}$ is alive up until $V$. Therefore, on $E'$, $T_{N} \geq T_{N}^{A} > \max(U,V)$.
+
+However, for $t > \max(U,V)$, I claim that $\xi_{N}(t) = \xi_{N}^{A}(t)$. To see this, any path to $x \in \xi_{N}(t)$ must either cross the path that goes from $A \cap [-b,-1]$ at time $0$ to $N$ at time $U$ or the path that goes from $A \cap [1,b]$ at time $0$ to $-N$ at time $V$. Therefore, there is a path from $A$ at time $0$ to $x$ at time $t$, whence $x \in \xi_{N}^{A}(t)$. Therefore, on $E'$, $T_{N} = T_{N}^{A}$, and we have shown \eref{eq:firstineq}.
+
+
+% \begin{align*}
+
+% \end{align*}
+% note, figure out how to make a bracket here without Emacs complaining
 
 \section{Almost-Ergodicity up to Hitting Time}
 
