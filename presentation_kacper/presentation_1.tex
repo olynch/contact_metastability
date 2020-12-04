@@ -153,11 +153,16 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \frametitle{Towards the rigorous definition}
     To ensure $R_N << \beta_N$, let's require $R_N / \beta_N \rightarrow 0$ as $N \rightarrow \infty$.
     \\~\\ 
-    For our purposes, define \textbf{observable quantity of a system} as $f(\xi_N(t))$, such that:
+    For our purposes, define \textbf{observable quantity of a system} as $f$, such that:
     \begin{itemize}
         \item $f : \{0,1\}^{\mathbb{Z}} \rightarrow \mathbb{R}$
         \item $f$ is local
     \end{itemize}
+    Define 
+    \[
+        \Lambda(f) :=  \text{ smallest } B\subset \mathbb{N} \text{ s.t. } f(A) = f(A\cap B) \ \forall B \subset \mathbb{N}
+    \]
+    We can think of $\Lambda(f)$ as the ``support'' of $f$.
 \end{frame}
 
 \begin{frame}
@@ -175,38 +180,16 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \end{frame}
 
 \begin{frame}
-    \frametitle{Towards the rigorous definition}
-
-    Recall what we said about the 2nd condition for metastability:
-
-    \begin{enumerate}
-        \item \textcolor{gray}{Assume that for a given $N$ we have some intermediate timescale such $R_N$ that $R_N << \beta_N$
-            \item Say we measure a temporal mean of some observable quantity of a system (e.g. particle density) over this timescale
-            \item We say system has stabilized if this mean is close to the expectation of this observable quantity w.r.t. some fixed probability distribution on $\{0,1\}^{\mathbb{Z}}$}
-    \end{enumerate}
+    \begin{itemize}
+        \item Take our \textbf{fixed probability distribution} to be $\mu$ (i.e. the non-zero invariant measure of the contact process in the supercritical regime).
+        \item Then, we can define \textbf{expectation of observable quantity} w.r.t to this probability distribtuion as $\mu(f) := \int fd\mu$ 
+        \item Take convergence in probability as how we understand \textbf{closeness}.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Towards the rigorous definition}
-
-    Recall what we said about the 2nd condition for metastability:
-
-    \begin{enumerate}
-            \item Assume that for a given $N$ we have some intermediate timescale such $R_N$ that $R_N << \beta_N$
-            \item Say we measure a temporal mean of some observable quantity of a system (e.g. particle density) over this timescale
-            \item \textcolor{gray}{We say system has stabilized if this mean is close to the expectation of this observable quantity w.r.t. some fixed probability distribution on $\{0,1\}^{\mathbb{Z}}$}
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}
-    Take our \textbf{fixed probability distribution} to be $\mu$ (i.e. the non-zero invariant measure of the contact process in the supercritical regime). \\~\\
-
-    Then, we can define \textbf{expectation of observable quantity} w.r.t to this probability distribtuion as $\mu(f) := \int fd\mu$ (I will call this quantity simply ``expectation'').
-\end{frame}
-
-\begin{frame}
-    Take convergence in probability as how we understand \textbf{closeness}. \\~\\
-    Thus, we want to have a sequence $R_N$, such that:
+    Let's try to work out a 1st draft of the theorem. \\~\\
+    We want to have a sequence $R_N$, such that:
     \begin{itemize}
         \item $R_N / \beta_N \rightarrow 0$ as $N \rightarrow \infty$
         \item for all $\varepsilon > 0$ and all observable quantities $f$
@@ -217,41 +200,9 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 
     As $N \rightarrow \infty$. \\~\\
     Are we done now?
-    \textcolor{white}{\textbf{No!} How do we choose $s$ (the starting point of temporal mean measurement)?}
-\end{frame}
-
-\begin{frame}
-    Take convergence in probability as how we understand \textbf{closeness}. \\~\\
-    Thus, we want to have a sequence $R_N$, such that:
-    \begin{itemize}
-        \item $R_N / \beta_N \rightarrow 0$ as $N \rightarrow \infty$
-        \item for all $\varepsilon > 0$ and all observable quantities $f$
-        \[
-            \mathbb{P}\left[ |A_{R_N}(s, f) - \mu(f)|\right < \varepsilon] \rightarrow 0
-        \]
-    \end{itemize}
-
-    As $N \rightarrow \infty$. \\~\\
-    Are we done now?
-    \textbf{No!} How do we choose $s$ (the starting point of temporal mean measurement)?
-\end{frame}
-
-\begin{frame}
-    Obviously, we want to choose $s$ such that the process $\xi_N(s+R_N)$ is still alive. Otherwise our temporal mean would indeed be far from the expectation. Thus, we want to start measuring at
-        $s$ such that $R_N + s < T_N$. \\~\\
-
-        Would saying that there exists $s$ such that our convergence in probability holds be sufficient? \\~\\\textcolor{white}{It would be a bit weak. We'd then say that the observer needs to start measuring at a very particular $s$ to observe that our temporal mean is close to the expectation. This is hard to satisfy, so 
-        we need something stronger.}
-\end{frame}
-\begin{frame}
-    Obviously, we want to choose $s$ such that the $\xi_N(s+R_N)$ is still alive. Otherwise our temporal mean would indeed be far from the expectation. Thus, we want to start measuring at
-        $s$ such that $R_N + s < T_N$. \\~\\
-
-        Would saying that there exists $s$ such that our convergence in probability holds be sufficient? \\~\\
-
-       It would be a bit weak. We'd then say that the observer needs to start measuring at a very particular $s$ to observe that the temporal mean is close to the expectation. 
-       This is hard to satisfy, so 
-        we need something stronger.
+    \visible<2->{
+        \textbf{No!} How do we choose $s$ (the starting point of temporal mean measurement)?
+    }
 \end{frame}
 
 \begin{frame}
@@ -263,7 +214,7 @@ Universiteit van Amsterdam \\ % Your institution for the title page
         \caption{Example of $K_N$}
         \label{fig:kn_rn}
     \end{figure}
-    Turns out that regardless of which of those intervals we choose for averaging, we can still make it highly probable that our temporal mean is as close to the $\mu(f)$ 
+    Turns out that even if we choose the worst-case interval for averaging, we can still make it highly probable that our temporal mean is as close to the $\mu(f)$ 
     as we want, given that we're free to increase $N$. 
 \end{frame}
 
@@ -278,45 +229,32 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \end{itemize}
 
     As $N \rightarrow \infty$. \\~\\
-    Phew\ldots are we done now?
+    This draft is almost ready - we now only have one more technicality left.
 \end{frame}
 
 \begin{frame}
-    In other words, we want to have a sequence $R_N$, such that:
-    \begin{itemize}
-        \item $R_N / \beta_N \rightarrow 0$ as $N \rightarrow \infty$
-        \item for all $\varepsilon > 0$ and all observable quantities $f$
-        \[
-            \mathbb{P}\left[ \max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, f) - \mu(f)| < \varepsilon\right] \rightarrow 0
-        \]
-    \end{itemize}
-
-    As $N \rightarrow \infty$. \\~\\
-    Phew\ldots are we done now? Not quite!
-\end{frame}
-
-\begin{frame}
-    Turns out that we need the following technicality: we need to choose $L(\varepsilon, f) \in \mathbb{N}$, and we need to have that
+    We need to choose $L(\varepsilon, f) \in \mathbb{N}$, and we need to have that
     \begin{itemize}
         \item $L < N$
-        \item $\Lambda(f) := supp(f) \subset [-N + L, N - L] \cap \mathbb{Z}$
+        \item $\Lambda(f) \subset [-N+L, N-L]$ (call $[-N+L, N-L]$ \textbf{inside region})
     \end{itemize}
+    ~\\
      Notice that $L$ does not depend on $N$. Thus, having to choose this $L$ doesn't restrict our choice of $f$ - it merely sets the minimum
      $N$ we can consider and we chose to grow $N \rightarrow \infty$.
     \\~\\
-    We can partition the main interval as follows:
-    \begin{itemize}
-        \item $[-N, -N+L)$ - \textbf{left boundary region}
-        \item $[-N+L, N-L]$ - \textbf{inside region}
-        \item $(N-L, N]$ - \textbf{right boundary region}
-    \end{itemize}
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.15]{./img/regions_df.png}
-        \caption{Example of $K_N$}
-        \label{fig:regions}
-    \end{figure}
+    \visible<2->{
+        Additionally, define
+        \begin{itemize}
+            \item $[-N, -N+L)$ - \textbf{left boundary region}
+            \item $(N-L, N]$ - \textbf{right boundary region}
+        \end{itemize}
+        \begin{figure}[H]
+            \centering
+            \includegraphics[scale=0.15]{./img/regions_df.png}
+            \caption{Partition of the main interval}
+            \label{fig:regions}
+        \end{figure}
+    }
 \end{frame}
 
 \subsection{Statement of the theorem} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
@@ -343,12 +281,12 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \frametitle{Proof}
     Set 
     \[B^N_k = \left\{ |A_{R_N}(kR_N, f) - \mu(f)| > \varepsilon\right\}\]
-    On $B^N_k$ the difference between temporal mean of observalbe measured over the $k$-th interval and its expectation is greater than we'd like to.
+    On $B^N_k$ the difference between temporal mean of observable measured over the $k$-th interval and its expectation is greater than we'd like to.
     $B^N_k$~means \textbf{failure} (in $k$-th interval).
     \\~\\
     We want the probability of having no failures to go to 1
     \[\mathbb{P}\left[ \max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, f) - \mu(f)| \leq \varepsilon   \right] =
-    \mathbb{P}\left[ \bigcap_{\mathbb{N}_0 \ni k < K_N}B_k^C \right] \rightarrow 1 \]
+    \mathbb{P}\left[ \bigcap_{\mathbb{N}_0 \ni k < K_N}\left(B^N_k\right)^C \right] \rightarrow 1 \]
     as $N\rightarrow\infty$
 \end{frame}
 
@@ -356,14 +294,16 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \frametitle{Proof}
     It is easy to show that $\mathbb{P}(K_N = 0) \rightarrow 0$. Thus, we can safely focus only on the subset of $\Omega$ where $K_N \geq 1$. \\~\\
     Combining this with the event from the previous slide and applying some simple algebra, we arrive at the following bound
+    \small
     \begin{align*}
-        \mathbb{P}\left[ K_N \geq 1,  \bigcap_{\mathbb{N}_0 \ni k < K_N}B_k^C \right]
-         \geq  \mathbb{P}[1 \leq K_N \leq m] - m^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B_k, K_{N} = j \right]
+        \mathbb{P}\left[ K_N \geq 1,  \bigcap_{\mathbb{N}_0 \ni k < K_N}\left(B^N_k\right)^C \right]
+        \geq  \mathbb{P}[1 \leq K_N \leq m] - m^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B^N_k, K_{N} = j \right]
     \end{align*}
+    \normalsize
     Our objective will be to find a sequence $\{m_N\}_{N\in\mathbb{N}}$ such that:
     \begin{itemize}
         \item $\mathbb{P}[1 \leq K_N \leq m_N] \rightarrow 1$
-        \item $m_N^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B_k, K_{N} = j \right] \rightarrow 0$ 
+        \item $m_N^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B^N_k, K_{N} = j \right] \rightarrow 0$ 
     \end{itemize}
     As $N \rightarrow \infty$
 \end{frame}
@@ -447,19 +387,17 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     Now we're ready to proceed. Recall, we want
 
     \begin{itemize}
-        \item $m_N^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B_k, K_{N} = j \right] \rightarrow 0$ 
+        \item $m_N^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B^N_k, K_{N} = j \right] \rightarrow 0$ 
     \end{itemize}
 
-    Let's take a closer look at $\mathbb{P}\left[ B_k, K_{N} = j \right]$. We will estimate the difference between the temporal average of $f(\xi_N)$ and it's expectation with 
+    Let's take a closer look at $\mathbb{P}\left[ B^N_k, K_{N} = j \right]$. We will estimate the difference between the temporal average of $f(\xi_N)$ and it's expectation with 
     a triangle inequality.
     For $k < j$ we have
-
-    \[
-        \left|A_{R_N}(kR_N, f) - \mu(f)\right| > \varepsilon \rightarrow
-    \]
     \begin{gather*}
-        \rightarrow \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \ \ \lor \\
-        \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2
+        \mathbb{P}\left[  \left|A_{R_N}(kR_N, f) - \mu(f)\right| > \varepsilon \right] \leq \\
+        \mathbb{P}\left[ \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \ \ \lor \right.
+        \\
+        \left.\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2 \right]
     \end{gather*}
 
 \end{frame}
@@ -467,30 +405,29 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \begin{frame}
     \frametitle{Proof}
     Let's take the first term in the alternative and try to find a bound for
-
     \[
         \mathbb{P}\left[ \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \right]
     \]
-
     It looks like we could almost apply weak convergence here, but we there's something missing\dots \\~\\ 
-    Weak convergence to $\mu(f)$ as $R \rightarrow \infty$ holds for
+    By weak convergence, as $R \rightarrow \infty$, we have
     \[
-        R_N^{-1}\int_{kR_N}^{(k+1)R_N}\mathbb{E}\left[ f(\xi(t)) \right]dt
+        R_N^{-1}\int_{kR_N}^{(k+1)R_N}\mathbb{E}\left[ f(\xi(t)) \right]dt \rightarrow \mu(f)
     \]
-
-    If we can now find a way to bind what's below, we're in business!
-    \[
-        \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t)) - \mathbb{E}\left[ f(\xi(t)) \right]dt > \varepsilon/4 \right|\right]
-    \]
+    \visible<2->{
+        If we can now find a way to bind what's below, we're in business! Notice that this is an exceedance probability for a random variable\dots Could Chebyshev be of help here?
+        \[
+            \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t)) - \mathbb{E}\left[ f(\xi(t))\right]dt \right| > \varepsilon/4 \right]
+        \]
+    }
 \end{frame}
 
 \begin{frame}
     \frametitle{Proof}
-    Turns out there is indeed a way to do that. This has to do with the fact that time correlations of $\xi(t)$ decay exponentially fast:
+    Indeed, we can find a bound on variance, and thus, by Chebyshev, on exceedance probability. This has to do with the fact that time correlations of $\xi(t)$ decay exponentially fast:
     \begin{theorem}[Exponentially decaying correlations]
         For any $f : \{0,1\}^\mathbb{Z}\rightarrow \mathbb{R}$ local, there are constants $C, \gamma$ such that 
         \[
-            \left|\mathbb{C}ov\left[ f(\xi(t)), f(\xi(s))\right]\right| \leq Ce^{-\gamma|s-r|}
+            \left|\mathbb{C}ov\left[ f(\xi(t)), f(\xi(s))\right]\right| \leq Ce^{-\gamma|s-t|}
         \]
     \end{theorem}
     \visible<2->{
@@ -508,12 +445,10 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 \begin{frame}
     \frametitle{Proof}
     Recall, we've had:
-
     \begin{gather*}
-        \mathbb{P}\left[ B_k, K_{N} = j \right] \leq \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \right] + \\
+        \mathbb{P}\left[ B^N_k, K_{N} = j \right] \leq \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi(t))dt - \mu(f)\right| > \varepsilon/2 \right] + \\
         \mathbb{P}\left[\left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2\right]
     \end{gather*}
-
     We managed to bind the 1st term using:
     \begin{itemize}
         \item Weak convergence
@@ -522,13 +457,14 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 
     Will this go through for the 2nd term?
     \begin{itemize}
-        \item Weak convergence is a no-go. $\xi_N(t)$ converges weakly to $\delta_0$, but it does so at $\beta_N$ timescale, which is supposed to be large compared with $R_N$
+        \item Weak convergence is a no-go. $\xi_N(t)$ converges weakly to $\delta_0$, but $\xi(t)$ converges to $\mu$\dots
+        \item However, we know that in our intermediate timescale $\xi_N(t)$ is distributed close to $\mu$, so we should be able, in principle, to find a bound for the 2nd term 
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Proof}
-    Let's massage the second term to see if we can get rid of $\xi_N$.
+    Wait, didn't we talk about a situation where $f(\xi_N(t))$ is actually equal to $f(\xi(t))$ before?
 
     \[
         \left|R_N^{-1}\int_{kR_N}^{(k+1)R_N}f(\xi_N(t)) - f(\xi(t))dt \right| > \varepsilon/2 
@@ -537,7 +473,7 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     Recall that 
     \begin{itemize}
         \item If $\xi_N$ is wide at $t$, we have $f(\xi_N(t)) = f(\xi(t))$ (shielding by a wide process). 
-        \item We can use $h_L$ to tell whether a process is wide or not
+        \item We can use $h_L$ to tell whether a process is wide or not (flipping trick).
         \item $\xi_N$ is alive for all $t$ we're considering. Hence $h_L(\xi_N(t)) = h_L(\xi_{[-N,\infty)}(t))$ (shielding of the left boundary region).
     \end{itemize}
     We get that the condition above implies
@@ -557,8 +493,8 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \end{gather*}
     This form is something we could use the previous ``machinery'' (weak convergence + covariance + chebyshev) on, but:
     \begin{itemize}
-        \item That method would us to make the time average arbitrarily close to $\mu(h_L)$, here we need to make it close to 0\dots
-        \item Solution: make $\mu(h_L)$ close to 0! We can still vary $L$!
+        \item That method would us to make the time average arbitrarily close to $\mu_{[-N, \infty)}(h_L)$, here we need to make it close to 0\dots
+        \item Solution: make $\mu_{[-N, \infty)}(h_L)$ close to 0! We can still vary $L$!
     \end{itemize}
 \end{frame}
 
@@ -566,9 +502,10 @@ Universiteit van Amsterdam \\ % Your institution for the title page
     \frametitle{Proof}
     Set $L$ to be such that 
     \[
-        \mu_{[0, \infty)}\left( \left\{ A : A \cup [0,L] = \varnothing \right\} \right) \leq \varepsilon/16\norm{f}
+        \mu_{[-N, \infty)}\left( \left\{ A : A \cap [0,L] = \varnothing \right\} \right) = 
+        \mu_{[0, \infty)}\left( \left\{ A : A \cap [0,L] = \varnothing \right\} \right) \leq \varepsilon/(16\norm{f})
     \]
-    Notice how we have used that $\mu_{[0, \infty)}$ is translation invariant. Defining $L$ in this way makes it independent of $N$, as we wanted.
+    Notice how we have used that $\mu_{[-N, \infty)}$ is translation invariant. Defining $L$ in this way makes it independent of $N$, as we wanted.
     Surprising, eh?
 \end{frame}
 
@@ -599,127 +536,37 @@ Universiteit van Amsterdam \\ % Your institution for the title page
 
 \begin{frame}
     \frametitle{Proof}
+    Recall we needed to find $m_N, R_N$ such that 
+    \begin{itemize}
+        \item $\mathbb{P}[1 \leq K_N \leq m_N] \rightarrow 1$
+        \item $m_N^2\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B^N_k, K_{N} = j \right] \rightarrow 0$
+    \end{itemize}
+    We can bind
+    \begin{itemize}
+        \item $\max_{1 \leq j}\max_{0 \leq k < j}\mathbb{P}\left[ B^N_k, K_{N} = j \right] \leq C/R_N$
+    \end{itemize}
+    ~\\
+    Another lemma shows that $N/\beta_N \rightarrow 0$. We can then set 
+    \[m_N = \beta_N^{1/5}/N^{1/5}, \ \  R_N = \beta_N^{9/10} N^{1/10}\]
+    As our solution.
 \end{frame}
-
-%------------------------------------------------
 
 \begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
-\end{block}
+    \frametitle{Proof}
+    Originally, the paper also considers shifted versions of $f$, but I thought this would only introduce more confusing indices. If $\tau_i,\ i\in \mathbb{Z}$ is the shift operator
+    we can also prove (using exactly the same techniques) that
+          \[
+              \mathbb{P}\left[ \max_{i}\max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, \tau_if) - \mu(f)| > \varepsilon\right] \rightarrow 0
+          \]
+    We must restrict $i$ to be such that $\Lambda(\tau_if) \subset [-N+L, N-L]$, though.
+    \\~\\
+    \visible<2->{
+        As a corollary, same statements also holds for spatial means of observable quantities
+              \[
+                  \mathbb{P}\left[ \max_{\mathbb{N}_0 \ni k < K_N}|A_{R_N}(kR_N, \bar{f}) - \mu(f)| > \varepsilon\right] \rightarrow 0
+              \]
+              Where $\bar{f} = \frac{1}{\#i}\sum_i\tau_if$ and $\#i$ is the total number of all $i$s allowed.
+    }
 \end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
-\end{frame}
-
-%------------------------------------------------
-\section{Second Section}
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Verbatim}
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}\end{verbatim}
-\end{example}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
-\end{thebibliography}
-}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\Huge{\centerline{The End}}
-\end{frame}
-
-%----------------------------------------------------------------------------------------
 
 \end{document} 
