@@ -195,11 +195,27 @@ Until $U$, $\xi_{N}^{A \cap [-b,-1]}(t) = \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)$
 
 However, for $t > \max(U,V)$, I claim that $\xi_{N}(t) = \xi_{N}^{A}(t)$. To see this, any path to $x \in \xi_{N}(t)$ must either cross the path that goes from $A \cap [-b,-1]$ at time $0$ to $N$ at time $U$ or the path that goes from $A \cap [1,b]$ at time $0$ to $-N$ at time $V$. Therefore, there is a path from $A$ at time $0$ to $x$ at time $t$, whence $x \in \xi_{N}^{A}(t)$. Therefore, on $E'$, $T_{N} = T_{N}^{A}$, and we have shown \eref{eq:firstineq}.
 
+Equation~\ref{eq:secondineq} also relies crucially on the percolation structure. Let $D_{b} = F_{b}^{C} \setminus \set{\emptyset}$. Then we must show that $\Prob(\xi_{N}(\beta_{N}s) \in D_{b}) < \ep$. To do this, note that as long as $\xi_{N}(t)$ is alive, we have
+\[ \xi_{N}(t) = \xi(t) \cap [\min \xi_{N}(t), \max \xi_{N}(t)] \]
+This is because any path to $x \in \xi(t) \cap [\min \xi_{N}(t), \max_{N}(t)]$ must either stay inside $[\min \xi_{N}(t), \max_{N}(t)]$, in which case $x \in \xi_{N}(t)$, or pass through the path to $\min \xi_{N}(t)$ or $\max \xi_{N}(t)$, in which case we also have $x \in \xi_{N}(t)$.
 
-% \begin{align*}
+Therefore, as long as $\min \xi_{N}(\beta_{N}s) < -N + L$, $\max \xi_{N}(\beta_{N}s) > N - L$ and $\xi_{N}(\beta_{N}s) \neq \emptyset$, we have $\xi(\beta_{N}s) \in D_{b}$ iff $\xi_{N}(\beta_{N}s) \in D_{b}$.
 
-% \end{align*}
-% note, figure out how to make a bracket here without Emacs complaining
+We can minimize $\xi(\beta_{N}s) \in D_{b}$ by picking $b > b''(\ep)$ sufficiently large. In order to use this, we use the following decomposition
+\begin{align*}
+  \Prob[\xi_{N}(\beta_{N}s) \in D_{b}] \leq&\; \Prob[\xi_{N}(\beta_{N}s) \in D_{b}, \min \xi_{N}(\beta_{N}s) < -N + L, \max \xi_{N}(\beta_{N}s) > N - L] \\
+                                &+ \Prob[\min \xi_{N}(\beta_{N}s) \geq -N + L, \xi_{N}(\beta_{N}s) \neq \emptyset] \\
+                                &+ \Prob[\max \xi_{N}(\beta_{N}s) \leq N - L, \xi_{N}(\beta_{N}s) \neq \emptyset]
+\end{align*}
+
+By what we noted earlier, the first term is less than $\Prob(\xi(\beta_{N}s) \in D_{b})$; pick $b$ such that this is less than $\frac{\ep}{3}$.
+
+It remains to minimize the last two terms; by symmetry we only show how to minimize the first. Using a percolation structure argument, it is easy to show that as long as $\xi_{N}(\beta_{N}s) \neq \emptyset$, $\min \xi_{N}(t) = \min \xi_{[-N,\infty)}$. Therefore,
+\begin{align*}
+  \Prob[\min \xi_{N}(\beta_{N}s) \geq -N + L, \xi_{N}(\beta_{N}) \neq \emptyset] &\geq \Prob[\min \xi_{[-N,\infty)} \geq -N+L] \\
+  &\geq \mu_{[-N,\infty)}\set{A \in [-N,\infty) \st A \cap [-N,-N+L-1] = \emptyset}
+\end{align*}
+Finally can pick $L$ large enough to make that last term less than $\frac{\ep}{3}$, and we have shown that everything can be made as small as we like, so we are done.
 
 \section{Almost-Ergodicity up to Hitting Time}
 
