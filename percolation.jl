@@ -1,6 +1,10 @@
 module Percolation
 
-using Distributions,Luxor
+using Random,Distributions,Luxor
+
+function set_seed(seed::Int64)
+  Random.seed!(seed)
+end
 
 function poisson_clock(t0::Float64,t1::Float64,rate::Float64)::Vector{Float64}
   dt = Exponential(1/rate)
@@ -29,9 +33,9 @@ struct Perc
   end
 
   function Perc(n::Int,T::Float64,λ::Float64)
-    deaths = [Event.(death, i, poisson_clock(0.,T,1.)) for i in 1:n]
-    infectls = [Event.(infectl, i, poisson_clock(0.,T,λ)) for i in 2:n]
-    infectrs = [Event.(infectr, i, poisson_clock(0.,T,λ)) for i in 1:(n-1)]
+    deaths = [[Event(death, i, clk) for clk in poisson_clock(0.,T,1.)] for i in 1:n]
+    infectls = [[Event(infectl, i, clk) for clk in poisson_clock(0.,T,λ)] for i in 2:n]
+    infectrs = [[Event(infectr, i, clk) for clk in poisson_clock(0.,T,λ)] for i in 1:(n-1)]
     events = [vcat(deaths...); vcat(infectls...); vcat(infectrs...)]
     sort!(events,by=e -> e.time)
     new(events)
