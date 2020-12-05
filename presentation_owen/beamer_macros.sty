@@ -1,0 +1,231 @@
+\ProvidesPackage{macros}
+
+%%% PACKAGES %%%
+
+% Typography
+\usepackage{enumerate}
+\usepackage{siunitx}
+
+% Standard AMS Packages
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+
+% Moar Symols
+\usepackage{stmaryrd}
+
+% Localization
+\usepackage[american]{babel}
+
+% Graphics
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{subcaption}
+\usetikzlibrary{matrix,arrows,decorations.markings,shapes,snakes,automata,backgrounds,petri}
+
+% Fine Tuning
+% \usepackage{microtype}
+
+% Extra Fonts
+
+% Chemical Formulae
+\usepackage{chemformula}
+
+% Physics (and calculus)
+\usepackage{physics}
+
+% Bibliography
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+
+% LuaTeX
+% \usepackage{luatexbase}
+
+%%% FIXES %%%
+
+% \renewcommand*{\mathbb}[1]{\mathbbm{#1}}
+\newcommand*{\ReDeclareMathOperator}[2]{\renewcommand{#1}{\operatorname{#2}}}
+
+%%% TYPOGRAPHICAL SHORTHANDS %%%
+
+\newcommand*{\mc}[1]{\mathcal{#1}}
+
+%%% NOTATIONS %%%
+
+% Symbols
+\newcommand*{\sq}{\square}
+
+% Arrows
+\newcommand*{\onto}{\twoheadrightarrow}
+\newcommand*{\inc}{\hookrightarrow}
+\newcommand*{\into}{\rightarrowtail}
+\renewcommand*{\to}[1][]{\xrightarrow{#1}}
+\newcommand*{\ot}[1][]{\xleftarrow{#1}}
+\newcommand*{\oto}{\leftrightarrow}
+\newcommand*{\tto}{\Rightarrow}
+\newcommand*{\mto}{\mapsto}
+
+% Functions
+\newcommand*{\maps}{\colon}
+
+% Duals
+\renewcommand*{\op}{^{\mathord{\text{op}}}}
+
+% Exponential and Imaginary
+\newcommand*{\e}{\mathrm{e}}
+\renewcommand*{\i}{\mathrm{i}}
+
+% Vectors
+\newcommand*{\vect}[1]{\bm{#1}}
+
+% Calculus
+% use the physics macro package
+
+% Set Theory
+\newcommand*{\set}[1]{\{#1\}}
+\newcommand*{\st}{\mid}
+\newcommand*{\sm}{\setminus}
+\newcommand*{\powerset}{\mc{P}}
+
+% References
+\newcommand{\eref}[1]{(\ref{#1})}
+\newcommand{\sref}[1]{section~\ref{#1}}
+\newcommand{\fref}[1]{figure~\ref{#1}}
+\newcommand{\tref}[1]{table~\ref{#1}}
+\newcommand{\Eref}[1]{Equation (\ref{#1})}
+\newcommand{\Sref}[1]{Section~\ref{#1}}
+\newcommand{\Fref}[1]{Figure~\ref{#1}}
+\newcommand{\Tref}[1]{Table~\ref{#1}}
+\newcommand{\Xref}[1]{Example~\ref{#1}}
+
+% Bra-ket notation
+% use the physics macro package
+
+% Relations
+
+\newcommand*{\ins}{\subseteq}
+\newcommand*{\sni}{\supseteq}
+
+%%% NOUNS %%%
+
+% Sets
+\newcommand*{\numberset}[1]{\mathbb{#1}}
+\newcommand*{\complex}{\numberset{C}}
+\newcommand*{\rational}{\numberset{Q}}
+\renewcommand*{\natural}{\numberset{N}}
+\newcommand*{\integer}{\numberset{Z}}
+\newcommand*{\ffield}{\numberset{F}}
+\renewcommand*{\real}{\numberset{R}}
+
+% Categories
+\newcommand*{\category}[1]{\mathsf{#1}}
+\newcommand*{\cat}[1]{\category{#1}}
+\newcommand*{\setC}{\category{Set}}
+\newcommand*{\finSetC}{\category{FinSet}}
+\newcommand*{\sSetC}{\category{sSet}}
+\newcommand*{\grpC}{\category{Grp}}
+\newcommand*{\abC}{\category{Ab}}
+\newcommand*{\catC}{\category{Cat}}
+\newcommand*{\modC}[1]{\category{Mod}_{#1}}
+\newcommand*{\vecC}[1]{\category{Vec}_{#1}}
+\newcommand*{\linRelC}[1]{\category{LinRel}_{#1}}
+\newcommand*{\decGraphC}[1]{\category{Grph}_{#1}}
+\newcommand*{\graphC}[1]{\category{Grph}}
+\newcommand*{\measC}{\category{Meas}}
+\newcommand*{\petriC}{\category{Petri}}
+\newcommand*{\finIntC}{\cat{FinInt}}
+\newcommand*{\intC}{\cat{Int}}
+\newcommand*{\attrSetC}{\mathrm{Attr}\text{-}\setC}
+\renewcommand*{\C}{\category{C}}
+
+
+% Distributions
+\DeclareMathOperator{\normalDist}{N}
+\DeclareMathOperator{\gammaDist}{\Gamma}
+\DeclareMathOperator{\expDist}{Exp}
+
+%%% OPERATORS %%%
+
+% Abelian Categories
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coim}{coim}
+\DeclareMathOperator{\coker}{coker}
+
+% arg(min/max)
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+
+% Representation Theory
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\SU}{SU}
+\DeclareMathOperator{\SO}{SO}
+
+% Category Theory
+\DeclareMathOperator{\cospan}{Csp}
+\newcommand*{\strucCospan}[1]{{_{#1}\cospan}}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ob}{ob}
+\newcommand*{\tensor}{\otimes}
+\ReDeclareMathOperator{\ev}{ev}
+\newcommand*{\cmp}{\mathbin{\fatsemi}}
+\let\limas\lim
+\renewcommand*{\lim}{\varprojlim}
+\newcommand*{\colim}{\varinjlim}
+\DeclareMathOperator{\tuc}{tuc}
+\DeclareMathOperator{\cut}{cut}
+\DeclareMathOperator{\bin}{bin}
+\DeclareMathOperator{\Prof}{Prof}
+\DeclareMathOperator{\Ran}{Ran}
+\DeclareMathOperator{\Lan}{Lan}
+\newcommand{\twisted}[1]{\textsc{tw}(#1)}
+
+% Profunctors
+
+% This is for profunctors in TikZCD
+\tikzset{mid vert/.style={/utils/exec=\tikzset{every node/.append style={outer sep=0.8ex}},
+    postaction=decorate,decoration={markings,
+      mark=at position 0.5 with {\draw[-] (0,#1) -- (0,-#1);}}},
+  mid vert/.default=0.75ex}
+
+% Attributed C-sets
+\DeclareMathOperator{\Attr}{Attr}
+\DeclareMathOperator{\Arr}{Arr}
+
+% Algebra
+\DeclareMathOperator{\Spec}{Spec}
+\newcommand*{\ideal}[1]{\mathfrak{#1}}
+
+% Undirected Categories
+\newcommand*{\bind}[3]{\mathbin{\begin{smallmatrix} #3 \\ #1 \equiv #2 \end{smallmatrix}}}
+
+% Probability
+\newcommand*{\Prob}{\mathop{\mathbb{P}}}
+\newcommand*{\E}{\mathop{\mathbb{E}}}
+\renewcommand*{\L}{\mc{L}}
+
+% Exponential
+% use physics package
+
+% Surrounding
+% mostly use physics package
+\newcommand*{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand*{\ceil}[1]{\left\lceil{#1}\right\rceil}
+
+% Set operations
+\newcommand*{\by}{\mathbin{\times}}
+
+% Inverse
+\newcommand*{\inv}{^{-1}}
+
+% Topology
+\DeclareMathOperator{\sk}{sk}
+\DeclareMathOperator{\bd}{\partial}
+\newcommand*{\nrv}{N}
+
+%%% THEOREMS %%%

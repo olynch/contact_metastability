@@ -1,0 +1,262 @@
+\documentclass{beamer}
+
+\usepackage{beamer_macros}
+
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}[subsections numbered]
+
+
+\mode<presentation>
+{
+  \useoutertheme{infolines}
+  \useinnertheme{default}
+  \usecolortheme{beaver}
+}
+
+\title{Metastability for the Contact Process on $\integer$, Part 1.}
+\author{O.~Lynch\inst{1}}
+
+\institute[Universiteit Utrecht]
+{
+  \inst{1}%
+  Department of Mathematics \\
+  Universiteit Utrecht
+}
+
+\date{\today}
+
+\newtheorem*{proposition}{Proposition}
+
+\newcommand{\ep}{\varepsilon}
+\newcommand{\ignore}[1]{}
+\newcommand{\rb}{\ignore{[}]}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+\subsection{Metastability}
+
+\begin{frame}{Informal Metastability}
+  \begin{itemize}
+    \item Markov process $X_{N}(t)$
+    \pause
+    \item As $N$ goes to $\infty$, looks like figure~\ref{fig:coarse_grain}.
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[width=0.7\pagewidth]{metastable_coarse_grain.pdf}
+    \caption{Coarse Graining as $N \to \infty$}
+    \label{fig:coarse_grain}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Formal Metastability}
+  \begin{enumerate}
+    \item Exponential hitting time
+    \begin{itemize}
+      \item There is a ``trap state'', with hitting time $T_{N}$
+      \item Asymptotically as $N \to \infty$, $T_{N}$ has an exponential distribution.
+    \end{itemize}
+    \pause
+    \item Quasi-stationary distribution before hitting time
+    \begin{itemize}
+      \item There is a ``approximate invariant distribution'' $\mu$
+      \item Up until $T_{N}$, temporal means of $X_{N}(t)$ approximate $\mu$
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\subsection{Contact Process}
+
+\begin{frame}{Contact Process, Generator Definition}
+  \begin{itemize}
+    \item $\xi(t)$ is a Markov process taking values in $2^{\integer} = \powerset(\integer)$
+    \item Characterized by
+      \begin{equation}
+        \label{eq:definition_contact_proc}
+        Lf(\eta) = \sum_{x} c(x,\eta)(f(\eta^{x}) - f(\eta))
+      \end{equation}
+    \item With rates
+      \begin{equation}
+        \label{eq:contact_proc_rates}
+        c(x,\eta) = \begin{cases}
+          1 & \qif* \eta(x) = 1 \\
+          \lambda(\eta(x-1) + \eta(x+1)) & \qotherwise*
+        \end{cases}
+      \end{equation}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Contact Process, Percolation Structure Definition}
+  \begin{itemize}
+    \item (show animation 1)
+    \pause
+    \item 3 processes for each site $x \in \integer$: $P_{x}$ (rate 1), $P_{x \to x+1}$ and $P_{x \to x-1}$ (both rate $\lambda$).
+    \pause
+    \item $\xi^{A}(t)$ is the set of $x \in \integer$ such that there is a path from $y \in A$ at time $0$ to $x$ at time $t$, $\xi(t) = \xi^{\integer}(t)$
+    \pause
+    \item A path is... \pause easier to see intuitively in than write down formally
+    \pause
+    \item Percolation structure is very useful for proofs
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Critical $\lambda$}
+  \begin{proposition}
+    There exists $\lambda_{c}$ such that for $\lambda < \lambda_{c}$, $\xi(t)$ has only one invariant measure, which is concentrated at $\emptyset$. For $\lambda > \lambda_{c}$, there is also another extremal invariant measure, which is obtained by time-averaging $\xi(t)$.
+  \end{proposition}
+\end{frame}
+
+\begin{frame}{Smaller Processes}
+  \begin{itemize}
+    \item $\xi_{B}^{A}(t)$ is the set of $x \in B$ such that there is a path from $y \in A$ at time $0$ to $x$ at time $t$ that does not go out of $B$
+    \item Special cases
+    \begin{itemize}
+      \item $\xi_{N}(t) = \xi_{[-N,N]}(t)$
+      \item $\xi_{[-N,\infty)}$
+      \item $\xi_{(-\infty,N\rb}$
+    \end{itemize}
+    \item Last two also have invariant measure $\mu$, for $\lambda > \lambda_{c}$.
+  \end{itemize}
+\end{frame}
+
+\section{Toolbox}
+
+\subsection{Useful Properties of Contact Process}
+
+\begin{frame}{Fundamental Lemma of the Percolation Structure}
+  \begin{lemma}
+    \begin{itemize}
+      \item Suppose there is a path from $(y_{1},0)$ to $(x_{1},t)$ and a path from $(y_{2},0)$ to $(x_{2},t)$, and $y_{1} < y_{2}$, $x_{1} > x_{2}$
+      \pause
+      \item Then $\exists$ a path from $(y_{1},0)$ to $(x_{2},t)$ and a path from $(y_{2},0)$ to $(x_{1},t)$.
+    \end{itemize}
+  \end{lemma}
+  \pause
+  \begin{proof}
+    The two paths must intersect at some point $(z,s)$. So then there are paths $(y_{1},0) \to (z,s)$, $(y_{2},0) \to (z,s)$, $(z,s) \to (x_{1},t)$, and $(z,s) \to (x_{2},t)$. Compose these paths to get our answer.
+  \end{proof}
+\end{frame}
+
+\begin{frame}{Monotone Convergence}
+  \begin{itemize}
+    \item $\Prob(\xi^{A}(t) \cap B \neq \emptyset)$ is a nonincreasing function of $t$.
+      \pause
+    \item Converges to $\mu_{B}(\eta \st \eta \cap A \neq \emptyset)$, where $\mu_{B}$ is the invariant measure of $\xi$ started in state $B$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Self-duality}
+  As long as $A$ or $B$ is finite, then for all $t$.
+  \begin{equation}
+    \Prob(\xi^{A}(t) \cap B \neq \emptyset) = \Prob(\xi^{B}(t) \cap A \neq \emptyset)
+  \end{equation}
+  \pause
+  Specifically, for $A$ finite
+  \begin{equation}
+    \Prob(\xi^{A}(t) \neq \emptyset) = \Prob(\xi(t) \cap A \neq \emptyset)
+  \end{equation}
+\end{frame}
+
+\section{Theorem 1}
+
+\subsection{Overview}
+
+\begin{frame}{Goals}
+  \begin{itemize}
+    \item Not feasible to give whole proof
+    \item Instead, will give strategy and then give detailed proof of just one part
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Strategy Part 1}
+  \begin{itemize}
+    \item Use $\beta_{N}$ instead of $\E T_{N}$, where $\beta_{N}$ is unique number such that
+    \[ \Prob(T_{N} > \beta_{N}) = \e^{-1} \]
+    \pause
+    \item Let $G_{N}(t) = \Prob\left[ \frac{T_{N}}{\beta_{N}} > t\right]$ be CDF for $T_{N} / \beta_{N}$
+    \pause
+    \item Prove that
+    \[ \limas_{N \to \infty} \abs{G_{N}(t)G_{N}(s) - G_{N}(t+s)} = 0 \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Strategy Part 2}
+  \begin{itemize}
+    \item Use a set $F_{b} \ins \powerset([-N,N])$ of ``sufficiently dense'' initial conditions
+    \pause
+    \item If we are not in $F_{b}$, then we are most likely already dead. Therefore, the probability that we end up in $F_{b}$ at time $t$ is approximately $G_{N}(t)$
+    \pause
+    \item Starting from $A \in F_{b}$ is ``just as good'' as starting from $[-N,N]$, so if we end up in $A \in F_{b}$ at time $t$, then we have approximately $G_{N}(s)$ chance of still being alive at time $s+t$.
+    \pause
+    \item Put together, these two imply that $G_{N}(t)G_{N}(s) \sim G_{N}(t+s)$
+  \end{itemize}
+\end{frame}
+
+\subsection{An Excerpt from Schonman Op. 1}
+\begin{frame}
+  \begin{itemize}
+    \item Show that $\Prob[T_{N} = T_{N}^{A}] > 1 - \ep$ when $A \in F_{b}$, for sufficiently large $N$ and $b$.
+    \item Let
+    \[F_{b} = \set{A \in \integer \st \frac{\abs{A \cap [-b,-1]}}{b} \geq \frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} \geq \frac{\rho}{2}}\]
+    \item $\rho = \Prob[\xi^{\set{0}}(t) \neq \emptyset, \forall t] = \mu(\eta \st \eta(0) = 1)$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item Let $n = n(\ep)$ large enough so that
+    \[ \mu(\eta \st \eta \cap [1,n]) > 1 - \frac{\ep}{2} \]
+    \item Then choose $b$ such that $b \rho/2 > n$, so that for $A \in F_{b}$, \[\abs{A \cap [-b,-1]} \geq b \rho/2 \geq n\]
+    \item Then,
+    \begin{align*}
+      \Prob[\xi_{[-N,\infty)}^{A \cap [-b,-1]}(t) \neq \emptyset, \forall t] &\geq \Prob[\xi_{[-N,\infty)}^{[-N,-N+n]}(t) \neq \emptyset, \forall t] \\
+                                                  &= \limas_{t \to \infty} \Prob[\xi_{[-N,\infty)}^{[-N,-N+n]} \neq \emptyset] \\
+                                                  &= \limas_{t \to \infty} \Prob[\xi_{[-N,\infty)} \cap [-N,-N+n] \neq \emptyset] \\
+                                                  &= \mu(\eta \st \eta \cap [-N,-N+n] \neq \emptyset) \\
+                                                  &> 1 - \frac{\ep}{2}
+    \end{align*}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item By symmetry,
+    \begin{align*}
+      \Prob[\xi_{(-\infty,N\rb}^{A \cap [1,b]}(t) \neq \emptyset, \forall t] > 1 - \frac{\ep}{2}
+    \end{align*}
+    \item Let $E$ be the event that $\xi_{(-\infty,N\rb}^{A \cap [1,b]}(t) \neq \emptyset, \forall t$ and $\xi_{[-N,\infty)}^{A \cap [-b,-1]}(t) \neq \emptyset, \forall t$. We have shown $\Prob(E) > 1 - \ep$.
+    \item It remains to show that $T_{N}^{A} = T_{N}$ on $E$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item Define two stopping times
+    \begin{align*}
+      U &= \inf{t \st N \in \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)} \\
+      V &= \inf{t \st -N \in \xi_{(-\infty,N\rb}^{A \cap [1,b]}(t)} \\
+    \end{align*}
+    \item These are almost surely finite on $E$.
+    \item At time $U$, $\xi_{N}^{A}$ is alive, because $\xi_{N}^{A}(U) \supset \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)$, and similarly for $V$, so $T_{N} \geq T_{N}^{A} > \max(U,V)$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item After $U$ and $V$, there is a path from $[-b,-1] \cap A$ to $N$, and a path from $[1,b] \cap A$ to $-N$. Intuitively, one of those paths intersects any path from $x \in [-N,N]$ to $y \in \xi_{N}(t)$. (draw picture)
+    \item Therefore, for $t > \max(U,V)$, $\xi_{N}(t) = \xi_{N}^{A}(t)$
+    \item Therefore, $T_{N} = T_{N}^{A}$ on $E$, and we have shown that $\Prob(T_{N} = T_{N}^{A}) > 1 - \ep$.
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
