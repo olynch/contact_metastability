@@ -1,6 +1,7 @@
 \documentclass{beamer}
 
 \usepackage{beamer_macros}
+\addbibresource{../contact_metastability.bib}
 
 \setbeamertemplate{section in toc}[sections numbered]
 \setbeamertemplate{subsection in toc}[subsections numbered]
@@ -14,6 +15,7 @@
 }
 
 \title{Metastability for the Contact Process on $\integer$, Part 1.}
+\subtitle{Following \cite{schonmann_metastability_1985}}
 \author{O.~Lynch\inst{1}}
 
 \institute[Universiteit Utrecht]
@@ -42,6 +44,10 @@
 \end{frame}
 
 \section{Introduction}
+
+\begin{frame}{Introduction}
+  \tableofcontents[currentsection]
+\end{frame}
 
 \subsection{Metastability}
 
@@ -112,38 +118,28 @@
 \begin{frame}{Smaller Processes}
   \begin{itemize}
     \item $\xi_{B}^{A}(t)$ is the set of $x \in B$ such that there is a path $(y,0) \to (x,t)$ with $y \in A$ and the path not leaving $B$
+          \pause
     \item Special cases
     \begin{itemize}
       \item $\xi_{N}(t) = \xi_{[-N,N]}(t)$
       \item $\xi_{[-N,\infty)}(t)$
       \item $\xi_{(-\infty,N\rb}(t)$
     \end{itemize}
-    \item Last two also have invariant measure $\mu$, for $\lambda > \lambda_{c}$.
   \end{itemize}
 \end{frame}
 
-\section{Crash Coarse in Contact Process}
+\section{Crash Course in Contact Process}
+
+\begin{frame}{Crash Course in Contact Process}
+  \tableofcontents[currentsection]
+\end{frame}
 
 \subsection{Toolbox}
 
 \begin{frame}{Critical $\lambda$}
   \begin{proposition}
-    There exists $\lambda_{c}$ such that for $\lambda < \lambda_{c}$, $\xi(t)$ has only one invariant measure, which is concentrated at $\emptyset$. For $\lambda > \lambda_{c}$, there is also another extremal invariant measure, which we call $\mu$, which is obtained by time-averaging $\xi(t)$.
+    There exists $\lambda_{c}$ such that for $\lambda < \lambda_{c}$, $\xi(t)$ has only one invariant measure, which is concentrated at $\emptyset$. For $\lambda > \lambda_{c}$, there is also another extremal invariant measure, which we call $\mu$, which is obtained by time-averaging $\xi(t)$. This also holds for $\xi_{[-N,\infty)}$ and $\xi_{(-\infty,N\rb}$
   \end{proposition}
-\end{frame}
-
-\begin{frame}{Fundamental Lemma of the Percolation Structure}
-  \begin{lemma}
-    \begin{itemize}
-      \item Suppose there is a path from $(y_{1},0)$ to $(x_{1},t)$ and a path from $(y_{2},0)$ to $(x_{2},t)$, and $y_{1} < y_{2}$, $x_{1} > x_{2}$
-      \pause
-      \item Then $\exists$ a path from $(y_{1},0)$ to $(x_{2},t)$ and a path from $(y_{2},0)$ to $(x_{1},t)$.
-    \end{itemize}
-  \end{lemma}
-  \pause
-  \begin{proof}
-    The two paths must intersect at some point $(z,s)$. So then there are paths $(y_{1},0) \to (z,s)$, $(y_{2},0) \to (z,s)$, $(z,s) \to (x_{1},t)$, and $(z,s) \to (x_{2},t)$. Compose these paths to get our answer.
-  \end{proof}
 \end{frame}
 
 \begin{frame}{Monotone Convergence}
@@ -202,8 +198,6 @@
           \begin{itemize}
             \item Critical $\lambda$
                   \pause
-            \item How percolation structure relates different contact processes
-                  \pause
             \item Monotone convergence
                   \pause
             \item Self-duality
@@ -214,6 +208,10 @@
 \end{frame}
 
 \section{Theorem 1}
+
+\begin{frame}{Theorem 1}
+  \tableofcontents[currentsection]
+\end{frame}
 
 \subsection{Overview}
 
@@ -262,7 +260,7 @@
 
 \begin{frame}{Into the Unknown}
   \begin{itemize}
-    \item Show that $\Prob[T_{N} = T_{N}^{A}] > 1 - \ep$ when $A \in F_{b}$, for sufficiently large $N$ and $b$.
+    \item Show that $\Prob[T_{N} = T_{N}^{A}] > 1 - \ep$ when $A \in F_{b}$, for sufficiently large $N$ and $b$. (i.e., $A \in F_{b}$ is ``just as good'' as $[-N,N]$)
     \item Let
           \[F_{b} = \set{A \in \integer \st \frac{\abs{A \cap [-b,-1]}}{b} \geq \frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} \geq \frac{\rho}{2}}\]
     \item ``sufficiently dense on both sides''
@@ -291,18 +289,56 @@
       U &= \inf\set{t \st N \in \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)} \\
       V &= \inf\set{t \st -N \in \xi_{(-\infty,N\rb}^{A \cap [1,b]}(t)}
     \end{align*}
-    \item These are almost surely finite on $E$.
+  \end{itemize}
+  \pause
+  \begin{figure}
+    \centering
+   \includegraphics[width=0.5\textwidth]{U_V.pdf}
+ \end{figure}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item $U$ and $V$ are almost surely finite on $E$.
     \item At time $U$, $\xi_{N}^{A}$ is alive, because $\xi_{N}^{A}(U) \supset \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)$, and similarly for $V$, so $T_{N} \geq T_{N}^{A} > \max(U,V)$
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \begin{itemize}
-    \item After $U$ and $V$, there is a path from $[-b,-1] \cap A$ to $N$, and a path from $[1,b] \cap A$ to $-N$. Intuitively, one of those paths intersects any path from $x \in [-N,N]$ to $y \in \xi_{N}(t)$. (draw picture)
-    \item Therefore, for $t > \max(U,V)$, $\xi_{N}(t) = \xi_{N}^{A}(t)$
+    \item After $U$ and $V$, there is a path from $[-b,-1] \cap A$ to $N$, and a path from $[1,b] \cap A$ to $-N$. Intuitively, one of those paths intersects any path from $x \in [-N,N]$ to $y \in \xi_{N}(t)$.
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{U_V_blocked.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item For $t > \max(U,V)$, $\xi_{N}(t) = \xi_{N}^{A}(t)$
     \item Therefore, $T_{N} = T_{N}^{A}$ on $E$, and we have shown that $\Prob(T_{N} = T_{N}^{A}) > 1 - \ep$.
   \end{itemize}
 \end{frame}
 
+\subsection{Conclusion}
+
+\begin{frame}{Summary}
+  We have learned
+  \begin{itemize}
+          \pause
+    \item What metastability is
+          \pause
+    \item Basic properties of the contact process
+          \pause
+    \item A rough sketch of how the contact process is metastable (part 1)
+          \pause
+    \item What working with the contact process in practice looks like
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Citations}
+  \printbibliography
+\end{frame}
 
 \end{document}
