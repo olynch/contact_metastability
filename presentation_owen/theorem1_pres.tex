@@ -101,7 +101,7 @@
     \pause
     \item 3 processes for each site $x \in \integer$: $P_{x}$ (rate 1), $P_{x \to x+1}$ and $P_{x \to x-1}$ (both rate $\lambda$).
     \pause
-    \item $\xi^{A}(t)$ is the set of $x \in \integer$ such that there is a path from $y \in A$ at time $0$ to $x$ at time $t$, $\xi(t) = \xi^{\integer}(t)$
+    \item $\xi^{A}(t)$ is the set of $x \in \integer$ such that there is a path $(y,0) \to (x,t)$ for $y \in A$.
     \pause
     \item A path is... \pause easier to see intuitively in than write down formally
     \pause
@@ -109,28 +109,28 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Critical $\lambda$}
-  \begin{proposition}
-    There exists $\lambda_{c}$ such that for $\lambda < \lambda_{c}$, $\xi(t)$ has only one invariant measure, which is concentrated at $\emptyset$. For $\lambda > \lambda_{c}$, there is also another extremal invariant measure, which is obtained by time-averaging $\xi(t)$.
-  \end{proposition}
-\end{frame}
-
 \begin{frame}{Smaller Processes}
   \begin{itemize}
-    \item $\xi_{B}^{A}(t)$ is the set of $x \in B$ such that there is a path from $y \in A$ at time $0$ to $x$ at time $t$ that does not go out of $B$
+    \item $\xi_{B}^{A}(t)$ is the set of $x \in B$ such that there is a path $(y,0) \to (x,t)$ with $y \in A$ and the path not leaving $B$
     \item Special cases
     \begin{itemize}
       \item $\xi_{N}(t) = \xi_{[-N,N]}(t)$
-      \item $\xi_{[-N,\infty)}$
-      \item $\xi_{(-\infty,N\rb}$
+      \item $\xi_{[-N,\infty)}(t)$
+      \item $\xi_{(-\infty,N\rb}(t)$
     \end{itemize}
     \item Last two also have invariant measure $\mu$, for $\lambda > \lambda_{c}$.
   \end{itemize}
 \end{frame}
 
-\section{Toolbox}
+\section{Crash Coarse in Contact Process}
 
-\subsection{Useful Properties of Contact Process}
+\subsection{Toolbox}
+
+\begin{frame}{Critical $\lambda$}
+  \begin{proposition}
+    There exists $\lambda_{c}$ such that for $\lambda < \lambda_{c}$, $\xi(t)$ has only one invariant measure, which is concentrated at $\emptyset$. For $\lambda > \lambda_{c}$, there is also another extremal invariant measure, which we call $\mu$, which is obtained by time-averaging $\xi(t)$.
+  \end{proposition}
+\end{frame}
 
 \begin{frame}{Fundamental Lemma of the Percolation Structure}
   \begin{lemma}
@@ -160,10 +160,57 @@
     \Prob(\xi^{A}(t) \cap B \neq \emptyset) = \Prob(\xi^{B}(t) \cap A \neq \emptyset)
   \end{equation}
   \pause
+  ``The probability of reaching somewhere in $B$ starting from $A$ is the same as the probability of reaching somewhere in $A$ starting from $B$''
+  \pause
   Specifically, for $A$ finite
   \begin{equation}
     \Prob(\xi^{A}(t) \neq \emptyset) = \Prob(\xi(t) \cap A \neq \emptyset)
   \end{equation}
+\end{frame}
+
+\begin{frame}{Consequence of Monotone Convergence + Self-duality}
+  \begin{align*}
+    \Prob(\xi^{A}(t) \neq \emptyset, \forall t > 0) &= \limas_{t \to \infty} \Prob(\xi^{A}(t) \neq \emptyset) \\
+                                 &= \limas_{t \to \infty} \Prob(\xi(t) \cap A \neq \emptyset) \\
+                                 &= \mu(\eta \st \eta \cap A \neq \emptyset)
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Characterizing $\mu$}
+  \begin{itemize}
+    \item $\mu$ is translation invariant
+          \pause
+    \item For $\lambda > \lambda_{c}$, given $\ep$, we can find $n(\ep)$ such that $\mu(\eta | \eta \cap [1,n(\ep)] \neq \emptyset) > 1 - \ep$
+          \pause
+    \item Therefore, we can find $n(\ep)$ so that if you start out in $[1,n(\ep)]$, you are almost sure to survive.
+          \pause
+    \item It turns out that you can generalize this: if you start out \emph{with at least $n(\ep)$} elements, you are almost sure to survive.
+  \end{itemize}
+\end{frame}
+
+\subsection{Review}
+
+\begin{frame}
+  What have we learned so far?
+  \begin{itemize}
+    \item An intuition for metastability --- two key properties
+          \pause
+    \item How to use the percolation structure to construct many related contact processes
+          \pause
+    \item Some miscellaneous useful facts about the contact process
+          \pause
+          \begin{itemize}
+            \item Critical $\lambda$
+                  \pause
+            \item How percolation structure relates different contact processes
+                  \pause
+            \item Monotone convergence
+                  \pause
+            \item Self-duality
+                  \pause
+            \item How to stay alive in the cruel, hard world of the contact process: be big!
+          \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Theorem 1}
@@ -171,8 +218,15 @@
 \subsection{Overview}
 
 \begin{frame}{Goals}
+  \begin{theorem}
+    If $T_{N}$ is hitting time of $\emptyset$, then
+    \[ \frac{T_{N}}{\E T_{N}} \to[w] \expDist(1) \]
+    That is, it converges to $\expDist(1)$ \emph{in distribution}.
+  \end{theorem}
+  \pause
   \begin{itemize}
     \item Not feasible to give whole proof
+          \pause
     \item Instead, will give strategy and then give detailed proof of just one part
   \end{itemize}
 \end{frame}
@@ -181,11 +235,14 @@
   \begin{itemize}
     \item Use $\beta_{N}$ instead of $\E T_{N}$, where $\beta_{N}$ is unique number such that
     \[ \Prob(T_{N} > \beta_{N}) = \e^{-1} \]
-    \pause
+          \pause
     \item Let $G_{N}(t) = \Prob\left[ \frac{T_{N}}{\beta_{N}} > t\right]$ be CDF for $T_{N} / \beta_{N}$
-    \pause
+          \pause
+    \item(note that $\set{ \frac{T_N}{\beta_N} > t} = \set{\xi_{N}(\beta_{N}t) \neq \emptyset}$)
+          \pause
     \item Prove that
-    \[ \limas_{N \to \infty} \abs{G_{N}(t)G_{N}(s) - G_{N}(t+s)} = 0 \]
+          \[ \limas_{N \to \infty} \abs{G_{N}(t)G_{N}(s) - G_{N}(t+s)} = 0 \]
+    \item The only function with $f(t+s) = f(t)f(s)$ and $\int_{0}^{\infty} f(t) \dd{t} = 1$ is $f(t) = e^{-t}$.
   \end{itemize}
 \end{frame}
 
@@ -193,48 +250,37 @@
   \begin{itemize}
     \item Use a set $F_{b} \ins \powerset([-N,N])$ of ``sufficiently dense'' initial conditions
     \pause
-    \item If we are not in $F_{b}$, then we are most likely already dead. Therefore, the probability that we end up in $F_{b}$ at time $t$ is approximately $G_{N}(t)$
+    \item If we are not in $F_{b}$, then we are most likely already dead. Therefore, the probability that we end up in $F_{b}$ at time $\beta_{N}t$ is approximately $G_{N}(t)$
     \pause
-    \item Starting from $A \in F_{b}$ is ``just as good'' as starting from $[-N,N]$, so if we end up in $A \in F_{b}$ at time $t$, then we have approximately $G_{N}(s)$ chance of still being alive at time $s+t$.
+    \item Starting from $A \in F_{b}$ is ``just as good'' as starting from $[-N,N]$, so if we end up in $A \in F_{b}$ at time $\beta_{N}t$, then we have approximately $G_{N}(s)$ chance of still being alive at time $\beta_{N}(s+t)$.
     \pause
     \item Put together, these two imply that $G_{N}(t)G_{N}(s) \sim G_{N}(t+s)$
   \end{itemize}
 \end{frame}
 
 \subsection{An Excerpt from Schonman Op. 1}
-\begin{frame}
+
+\begin{frame}{Into the Unknown}
   \begin{itemize}
     \item Show that $\Prob[T_{N} = T_{N}^{A}] > 1 - \ep$ when $A \in F_{b}$, for sufficiently large $N$ and $b$.
     \item Let
-    \[F_{b} = \set{A \in \integer \st \frac{\abs{A \cap [-b,-1]}}{b} \geq \frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} \geq \frac{\rho}{2}}\]
+          \[F_{b} = \set{A \in \integer \st \frac{\abs{A \cap [-b,-1]}}{b} \geq \frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} \geq \frac{\rho}{2}}\]
+    \item ``sufficiently dense on both sides''
     \item $\rho = \Prob[\xi^{\set{0}}(t) \neq \emptyset, \forall t] = \mu(\eta \st \eta(0) = 1)$.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \begin{itemize}
-    \item Let $n = n(\ep)$ large enough so that
-    \[ \mu(\eta \st \eta \cap [1,n]) > 1 - \frac{\ep}{2} \]
-    \item Then choose $b$ such that $b \rho/2 > n$, so that for $A \in F_{b}$, \[\abs{A \cap [-b,-1]} \geq b \rho/2 \geq n\]
-    \item Then,
-    \begin{align*}
-      \Prob[\xi_{[-N,\infty)}^{A \cap [-b,-1]}(t) \neq \emptyset, \forall t] &\geq \Prob[\xi_{[-N,\infty)}^{[-N,-N+n]}(t) \neq \emptyset, \forall t] \\
-                                                  &= \limas_{t \to \infty} \Prob[\xi_{[-N,\infty)}^{[-N,-N+n]} \neq \emptyset] \\
-                                                  &= \limas_{t \to \infty} \Prob[\xi_{[-N,\infty)} \cap [-N,-N+n] \neq \emptyset] \\
-                                                  &= \mu(\eta \st \eta \cap [-N,-N+n] \neq \emptyset) \\
-                                                  &> 1 - \frac{\ep}{2}
-    \end{align*}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \begin{itemize}
-    \item By symmetry,
-    \begin{align*}
-      \Prob[\xi_{(-\infty,N\rb}^{A \cap [1,b]}(t) \neq \emptyset, \forall t] > 1 - \frac{\ep}{2}
-    \end{align*}
-    \item Let $E$ be the event that $\xi_{(-\infty,N\rb}^{A \cap [1,b]}(t) \neq \emptyset, \forall t$ and $\xi_{[-N,\infty)}^{A \cap [-b,-1]}(t) \neq \emptyset, \forall t$. We have shown $\Prob(E) > 1 - \ep$.
-    \item It remains to show that $T_{N}^{A} = T_{N}$ on $E$.
+    \item Let $n = n(\ep)$ large enough so that starting out with $n$ elements will let you survive forever with probability $1 - \ep/2$
+          \pause
+    \item Then if $b \rho/2 > n(\ep)$, for $A$ in $F_{b}$ starting in $[1,b] \cap A$ or $[-b,-1] \cap A$ will let you survive forever with probability $1 - \ep/2$
+          \pause
+    \item Let $E$ be the event that $\xi_{[-N,\infty)}^{A\cap[-b,-1]}(t)$ and $\xi_{(-\infty,N]}^{A \cap [1,b]}(t)$ survive forever (the invariant distribution for $[-N,\infty)$ is the same as that for $\integer$)
+          \pause
+    \item $\Prob(E) > 1 - \ep$
+          \pause
+    \item Therefore, we are done if in $E$, $T_{N} = T_{N}^{A}$.
   \end{itemize}
 \end{frame}
 
@@ -242,8 +288,8 @@
   \begin{itemize}
     \item Define two stopping times
     \begin{align*}
-      U &= \inf{t \st N \in \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)} \\
-      V &= \inf{t \st -N \in \xi_{(-\infty,N\rb}^{A \cap [1,b]}(t)} \\
+      U &= \inf\set{t \st N \in \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)} \\
+      V &= \inf\set{t \st -N \in \xi_{(-\infty,N\rb}^{A \cap [1,b]}(t)}
     \end{align*}
     \item These are almost surely finite on $E$.
     \item At time $U$, $\xi_{N}^{A}$ is alive, because $\xi_{N}^{A}(U) \supset \xi_{[-N,\infty)}^{A \cap [-b,-1]}(t)$, and similarly for $V$, so $T_{N} \geq T_{N}^{A} > \max(U,V)$
