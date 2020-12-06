@@ -1,16 +1,22 @@
 \documentclass{scrartcl}
 \usepackage{latexrc/macros}
 \title{Metastability for the Contact Process on $\integer$}
-\author{Owen Lynch \and Kacper Urbansky}
+\author{Owen Lynch \and Kacper Urbański}
 \DeclareMathOperator{\expDist}{Exp}
 \newcommand{\ep}{\varepsilon}
 \begin{document}
 
 \maketitle
+\begin{abstract}
+The most basic description of metastability is that it is the presence of ``quasi-equlibria'' states and rapid transitions between them in a system. Metastability is
+a common phenomenon in nature, with examples ranging from physics to economics and social sciences. In this paper we will focus on framing the empirical phenomenon of metastability
+as a rigorous property of an abstract system. We will use a well-known interacting particle system - the Voter Model, for this purpose. 
+\end{abstract}
 
-\section{Overview}
+\section{Overview - what's metastability?}
 
-The essential idea of metastability is that, as some parameter goes to infinity, we can ``coarse-grain'' a Markov process $\xi_{t}$ into something that looks like the Markov process in \fref{fig:metastability_nutshell}.
+Take a family of Markov processes $\{\xi_N(t)\}_{N\in\mathbb{N}}$. The essential idea behind metastability is that, if we were to discretize (``coarse-grain'') time and increase $N$, 
+the process under consideration would look more and more like the Markov process in \fref{fig:metastability_nutshell}.
 
 \begin{figure}[h!]
   \centering
@@ -19,7 +25,7 @@ The essential idea of metastability is that, as some parameter goes to infinity,
   \ref{fig:metastability_nutshell}
 \end{figure}
 
-The system begins in the so-called ``metastable state'', and has a very small chance to move to the stable state at any time. The stable state is either absorbing, or close-to absorbing; in the case that we will talk about in this paper, the stable state is absorbing.
+The system begins in a so-called ``metastable state'', and has a very small chance to move to the stable state at any time. The stable state is either absorbing, or close-to absorbing; in the case that we will talk about in this paper, the stable state is absorbing.
 
 In order to make this ``coarse-graining'' happen, we need two things to be true asymptotically.
 
@@ -30,12 +36,13 @@ In order to make this ``coarse-graining'' happen, we need two things to be true 
 
 Together, these two properties intuitively allow us to approximate the entire process by sampling from the stationary distribution up until the hitting time, and then putting the system in the absorbing state after the hitting time.
 
-The difficulty comes in stating these two properties precisely. To do this, suppose that $N$ is the parameter of the system that goes to $\infty$, (i.e. we have a collection of processes $\xi_{N}(t)$), $T_{N}$ is the hitting time of the absorbing state, $\mu$ is the stationary distribution, and $R_{N}$ is a ``time scale'' parameter that satisfies $R_{N}/\E T_{N} \to 0$. Then we rewrite the two properties more formally as
+The difficulty comes in stating these two properties precisely. To do this, suppose that $T_{N}$ is the hitting time of the absorbing state, $\mu$ is the stationary distribution, 
+and $R_{N}$ is a ``time scale'' parameter that satisfies $R_{N}/\E T_{N} \to 0$. Then we rewrite the two properties more formally as
 
 \begin{enumerate}
   \item $T_{N} / \E T_{N} \to \expDist(1)$ in distribution as $N \to \infty$.
   \item For any $f$,
-    \[ \int_{S}^{S + R_{N}} f(\xi_{N}(t)) \d{t} \to \mu(f) \]
+    \[ \int_{S}^{S + R_{N}} f(\xi_{N}(t)) dt \to \mu(f) \]
     as $N \to \infty$, for any $S + R_{N} < T_{N}$.
 \end{enumerate}
 
@@ -44,31 +51,32 @@ This second statement is still very imprecise, and actually mathematically meani
 \section{Review of Contact Process}
 
 \subsection{Basic Definitions}
+% TODO Proposition: remove this fragment to free up space
+%The contact process on $\integer$ can be defined by the Markov pregenerator $L$ with domain cylindrical functions $2^{\integer} \to \real$ given by
+%\begin{equation}
+%  \label{eq:contact_generator}
+%  Lf(\eta) = \sum_{x \in \integer} c(x,\eta) (f(\eta^{x}) - f(\eta))
+%\end{equation}
+%where
+%\begin{equation*}
+%  c(x,\eta) = \begin{cases}
+%    1 & \qif* \eta(x) = 1 \\
+%    \lambda(\eta(x-1) + \eta(x+1)) & \qif* \eta(x) = 0
+%  \end{cases}
+%\end{equation*}
+%$\lambda$ is the single parameter for the contact process; we will discuss this more later.
 
-The contact process on $\integer$ can be defined by the Markov pregenerator $L$ with domain cylindrical functions $2^{\integer} \to \real$ given by
-\begin{equation}
-  \label{eq:contact_generator}
-  Lf(\eta) = \sum_{x \in \integer} c(x,\eta) (f(\eta^{x}) - f(\eta))
-\end{equation}
-where
-\begin{equation*}
-  c(x,\eta) = \begin{cases}
-    1 & \qif* \eta(x) = 1 \\
-    λ(\eta(x-1) + \eta(x+1)) & \qif* \eta(x) = 0
-  \end{cases}
-\end{equation*}
-$\lambda$ is the single parameter for the contact process; we will discuss this more later.
-
-However, there is an alternative definition that lends itself better to certain constructions that are useful in proofs.
+We could succinctly define the Contact Process by using its Markov generator. However, for our purposes we will use
+an alternative definition that lends itself better to certain constructions that are useful in proofs concerning metastability.
 
 First we construct a ``percolation structure'', which consists of for each $x \in \integer$
 \begin{enumerate}
-  \item A poisson process $P_{x}$ with rate 1, which we call the ``death'' process at $x$.
-  \item A poisson process $P_{x \to x+1}$ with rate $\lambda$, which we call the ``right infection'' process at $x$.
-  \item A poisson process $P_{x \to x-1}$ with rate $\lambda$, which we call the ``left infection'' process at $x$.
+  \item A Poisson process $P_{x}$ with rate 1, which we call the ``death'' process at $x$.
+  \item A Poisson process $P_{x \to x+1}$ with rate $\lambda$, which we call the ``right infection'' process at $x$.
+  \item A Poisson process $P_{x \to x-1}$ with rate $\lambda$, which we call the ``left infection'' process at $x$.
 \end{enumerate}
 
-We consider $P_{x}$ to be a random element of $\powerset(\real)$, i.e. $t \in P_{x}$ if and only if the poisson process ``ticks'' at time $t$.
+We consider $P_{x}$ to be a random element of $\powerset(\real)$, i.e. $t \in P_{x}$ if and only if the Poisson process ``ticks'' at time $t$.
 
 \begin{figure}[h!]
   \centering
@@ -81,43 +89,49 @@ We define a ``path'' between $(x,s), (y,t) \in \integer \by \real$ with $s \leq 
 $(z_{0},r_{0}), \ldots, (z_{n},r_{n})$ with $r_{i} \leq r_{i+1}$ such that for all $(z_{i},r_{i}),(z_{i+1},r_{i+1})$, either
 \begin{enumerate}
   \item $r_{i} = r_{i+1}$, $\abs{z_{i} - z_{i+1}} = 1$, and $r_{i} \in P_{z_{i} \to z_{i+1}}$. In this case, we are jumping laterally by one line at a time of infection.
-  \item $z_{i} = z_{i+1}$, and $[r_{i},r_{i+1}] \cap P_{z_{i}} = \emptyset$. In this case, we are moving along a vertical line that has no deaths in it.
+  \item $z_{i} = z_{i+1}$, and $[r_{i},r_{i+1}] \cap P_{z_{i}} = \emptyset$. In this case, we are moving along a vertical line, uninterrupted by any deaths.
 \end{enumerate}
 
-Then $\xi^{A}(t)$ is the set of $y$ such that there is a path from $(x,0)$ to $(y,t)$ for some $x \in A$. If the superscript is omitted, then we assume $A = \integer$, i.e. $\xi(t) = \xi^{\integer}(t)$.
+Define $\xi^{A}(t)$ to be the set of $y$ such that there is a path from $(x,0)$ to $(y,t)$ for some $x \in A$. If the superscript is omitted, then we assume $A = \integer$, i.e. $\xi(t) = \xi^{\integer}(t)$.
 
 For any $A \ins B$, we define $\xi_{B}^{A}(t)$ to be the set of $y$ such that there is a path from $(x,0)$ to $(y,t)$ for some $x \in A$ that stays entirely within $B$. As a special case, we let $\xi_{N}^{A}(t) = \xi_{[-N,N]}^{A}$, for $N \in \natural$. Note that $\xi_{B}$ takes values exclusively in $\powerset(B)$.
 
 \subsection{Useful Properties}
 
-One of the most important facts about the contact process is that there is a critical value of $\lambda$, $\lambda_{c}$. For $\lambda < \lambda_{c}$, $\xi(t)$ has unique extremal invariant measure $\delta_{\emptyset}$, but for $\lambda > \lambda_{c}$, $\xi(t)$ has another extremal invariant measure $\mu$ defined by
+One of the most important facts about the contact process is that there is a critical value of $\lambda$, $\lambda_{c}$. For $\lambda < \lambda_{c}$, $\xi(t)$ has a unique 
+extremal invariant measure $\delta_{\emptyset}$. At $\lambda = \lambda_{c}$ the system undergoes a phase transition - for $\lambda > \lambda_{c}$, another extremal invariant 
+measure $\mu$ appears, with the property that
 \[ \mu(f) = \limas_{T \to \infty} \frac{1}{T} \int_{0}^{T} \E f(\xi(t)) \dd{t} \]
-and this measure is not concentrated at $\emptyset$.
+This measure is not concentrated at $\emptyset$.
 
-For $\xi_{N}(t)$, the only invariant measure is $\delta_{\emptyset}$, because $\emptyset$ is a trap and $\xi_{N}$ takes values on a finite state space. However, as mentioned before, we will see later on that $\xi_{N}(t)$ \emph{approximately} has invariant measure $\mu$ all the way up until it reaches $\emptyset$.
+For $\xi_{N}(t)$, the only invariant measure is $\delta_{\emptyset}$, because $\emptyset$ is a trap and $\xi_{N}$ takes values on a finite state space. 
+However, as mentioned before, for $\lambda > \lambda_{c}$ an analogue of a phase transition takes place. The system starts being metastable, and stays distributed
+\emph{approximately} as $\mu$, before a sudden fluctuation takes it to $\emptyset$.
 
-TODO: give brief explanations for each of these.
+%TODO: Proposition: remove this to make space
+%TODO: give brief explanations for each of these.
+%
+%\begin{proposition}
+%$\Prob(\xi(t) \cap A \neq \emptyset)$ monotonically decreases to $\mu(\eta \st \eta \cap A \neq \emptyset)$.
+%\end{proposition}
+%
+%\begin{proposition}
+%The contact process is \emph{self-dual}.
+%\end{proposition}
+%
+%\begin{corollary}
+%$\Prob(\xi^{A}(s) \neq \emptyset, \forall s \geq 0) = \mu(\eta \st \eta \cap A \neq \emptyset)$
+%\end{corollary}
+%
+%\begin{proposition}
+%Let $\rho = \Prob(\xi^{\set{0}}(s) \neq \emptyset) = \mu(\eta \st \eta(0) = 1)$, if $\lambda$ is the parameter for $\xi$. Then if $\lambda > \lambda_{c}$ then $\rho > 0$. This will later be an important quantity for proofs.
+%\end{proposition}
+%
+%\begin{proposition}
+%$\mu$ is translation-invariant, and even better, ergodic under translations. This means that one can approximate $\mu(f)$ by averaging $\E \tau_{i}f(\xi(t))$ over a large number of $i$, where $\tau_{i}f(\eta)$ is $f$ applied to $\eta$ shifted by $i$. Finally, $\mu$ has exponentially decaying correlations; that is if $\set{X_{i}}_{i \in \integer}$ is distributed according to $\mu$, then the correlation between $X_{i}$ and $X_{j}$ decays exponentially with $\abs{i - j}$.
+%\end{proposition}
 
-\begin{proposition}
-  $\Prob(\xi(t) \cap A \neq \emptyset)$ monotonically decreases to $\mu(\eta \st \eta \cap A \neq \emptyset)$.
-\end{proposition}
-
-\begin{proposition}
-  The contact process is \emph{self-dual}.
-\end{proposition}
-
-\begin{corollary}
-  $\Prob(\xi^{A}(s) \neq \emptyset, \forall s \geq 0) = \mu(\eta \st \eta \cap A \neq \emptyset)$
-\end{corollary}
-
-\begin{proposition}
-  Let $\rho = \Prob(\xi^{\set{0}}(s) \neq \emptyset) = \mu(\eta \st \eta(0) = 1)$, if $\lambda$ is the parameter for $\xi$. Then if $\lambda > \lambda_{c}$ then $\rho > 0$. This will later be an important quantity for proofs.
-\end{proposition}
-
-\begin{proposition}
-  $\mu$ is translation-invariant, and even better, ergodic under translations. This means that one can approximate $\mu(f)$ by averaging $\E \tau_{i}f(\xi(t))$ over a large number of $i$, where $\tau_{i}f(\eta)$ is $f$ applied to $\eta$ shifted by $i$. Finally, $\mu$ has exponentially decaying correlations; that is if $\set{X_{i}}_{i \in \integer}$ is distributed according to $\mu$, then the correlation between $X_{i}$ and $X_{j}$ decays exponentially with $\abs{i - j}$.
-\end{proposition}
-
+%TODO Proposition: reduce this section take up 1.75 of the page max. I do the same for Theorem 2
 \section{Hitting Time of Stable State}
 
 \begin{theorem}
