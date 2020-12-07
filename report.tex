@@ -1,5 +1,10 @@
 \documentclass{scrartcl}
+
+%\usepackage{natbib}
 \usepackage{latexrc/macros}
+
+\addbibresource{biblio.bib}
+
 \title{Metastability for the Contact Process on $\integer$}
 \author{Owen Lynch \and Kacper Urbański}
 \DeclareMathOperator{\expDist}{Exp}
@@ -11,7 +16,8 @@
     Metastability is the coexistence of an equilibrium and a ``quasi-equilibrium'' (metastable) state in a system. If we look at a metastable system in time domain, it 
     initially appears to have stabilized in the ``quasi-equilibrium'' state,
     until it suddenly relaxes to the true equilibrium. Metastability is a common phenomenon in nature, with examples ranging from physics to economics and social sciences. 
-    In this paper we will focus on framing this phenomenon as a rigorous property of an abstract interacting particle system - the Contact Process.
+    This work is a summary of a paper by R. Schonmann \cite{schonmann}, which
+    frames this phenomenon as a rigorous property of an abstract interacting particle system - the Contact Process.
 \end{abstract}
 
 \section{Overview - what's metastability?} \label{overview}
@@ -22,9 +28,9 @@ the process under consideration look more and more like the Markov process in \f
 
 \begin{figure}[h!]
   \centering
-
+  \includegraphics{presentation_owen/metastable_coarse_grain.pdf}
   \caption{Metastability in a Nutshell}
-  \ref{fig:metastability_nutshell}
+  \label{fig:metastability_nutshell}
 \end{figure}
 
 In other words, the system begins in a so-called ``metastable state'', and has a very small chance to move to the stable state at any time. The stable state is either absorbing, or close-to absorbing; in the case that we will talk about in this paper, the stable state is absorbing.
@@ -80,12 +86,12 @@ First we construct a ``percolation structure'', which consists of for each $x \i
 
 We consider $P_{x}$ to be a random element of $\powerset(\real)$, i.e. $t \in P_{x}$ if and only if the Poisson process ``ticks'' at time $t$.
 
-\begin{figure}[h!]
-  \centering
-  % TODO
-  \caption{Example Percolation Structure}
-  \label{fig:ex_perc_structure}
-\end{figure}
+%\begin{figure}[h!]
+%  \centering
+%  % TODO
+%  \caption{Example Percolation Structure}
+%  \label{fig:ex_perc_structure}
+%\end{figure}
 
 We define a ``path'' between $(x,s), (y,t) \in \integer \by \real$ with $s \leq t$ to be a sequence
 $(z_{0},r_{0}), \ldots, (z_{n},r_{n})$ with $r_{i} \leq r_{i+1}$ such that for all $(z_{i},r_{i}),(z_{i+1},r_{i+1})$, either
@@ -136,7 +142,7 @@ However, as mentioned before, for $\lambda > \lambda_{c}$ an analogue of a phase
 %TODO Proposition: reduce this section take up 1.75 of the page max. I do the same for Theorem 2
 \section{Hitting Time of Stable State}
 
-\begin{theorem}
+\begin{theorem}[from \cite{schonmann}]
   If $T_{N} = \inf\set{t > 0 \st \xi_{N}(t) \neq \emptyset}$, then
   \[ \frac{T_{N}}{\E T_{N}} \to \expDist(1) \]
   in distribution.
@@ -148,40 +154,45 @@ Now let $G_{N}(t) = \Prob[\frac{T_{N}}{\beta_{N}} > t]$, the CDF of $T_{N}/\beta
 \[ \limas_{N \to \infty} \abs{G_{N}(t+s) - G_{N}(t)G_{N}(s)} = 0 \]
 for all $t,s > 0$.
 
-Note that $G_{N}(t) = \Prob[\xi_{N}(t) \neq \emptyset]$, as $\xi_{N}$ is ``alive'' at time $t$ if and only if $T_{N} > t$. Thus,
-
-\begin{align*}
-  G_{N}(t+s) &= \Prob[\xi_{N}(t+s) \neq \emptyset] \\
-             &= \sum_{A \neq \emptyset} \Prob[\xi_{N}(t+s) \neq \emptyset | \xi_{N}(t) = A] \Prob[\xi_{N}(t) = A] \\
-             &= \sum_{A \neq \emptyset} G_{N}^{A}(s) \Prob[\xi_{N}(t) = A] \\
-             &\leq G_{N}(s) \sum_{A \neq \emptyset} \Prob[\xi_{N}(t) = A] \\
-             &= G_{N}(s) G_{N}(t)
-\end{align*}
-
-Therefore, we are looking to show that $G_{N}(s) G_{N}(t) - G_{N}(t+s) \to 0$ (we can forget the absolute value signs).
+%Note that $G_{N}(t) = \Prob[\xi_{N}(t) \neq \emptyset]$, as $\xi_{N}$ is ``alive'' at time $t$ if and only if $T_{N} > t$. Thus,
+%
+%\begin{align*}
+%  G_{N}(t+s) &= \Prob[\xi_{N}(t+s) \neq \emptyset] \\
+%             &= \sum_{A \neq \emptyset} \Prob[\xi_{N}(t+s) \neq \emptyset | \xi_{N}(t) = A] \Prob[\xi_{N}(t) = A] \\
+%             &= \sum_{A \neq \emptyset} G_{N}^{A}(s) \Prob[\xi_{N}(t) = A] \\
+%             &\leq G_{N}(s) \sum_{A \neq \emptyset} \Prob[\xi_{N}(t) = A] \\
+%             &= G_{N}(s) G_{N}(t)
+%\end{align*}
+%
+%Therefore, we are looking to show that $G_{N}(s) G_{N}(t) - G_{N}(t+s) \to 0$ (we can forget the absolute value signs).
 
 It is at this point that we introduce a curious little construction, which seems to not make much sense at first but turns out to be the key to the entire proof. Define $F_{b}$ for $b > 0$ by
 
-\[ F_{b} = \set{A \ins \integer \st \frac{\abs{A \cap [-b,-1]}}{b} > frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} > frac{\rho}{2}} \]
+\[ F_{b} = \left\{A \ins \integer \st \frac{\abs{A \cap [-b,-1]}}{b} > \frac{\rho}{2}, \frac{\abs{A \cap [1,b]}}{b} > \frac{\rho}{2}\right\} \]
 
 %Recall that $\rho$ was defined in \ref{prop:rho_lambda} to be the probability that $\xi^{\set{0}}$ never dies. The intuition that the reader should hold for $F_{b}$ is that it is the set of $A$ that are ``sufficiently dense'' on $[-b,-1]$ and $[1,b]$ so that $\xi^{A}_{N}$ behaves just like $\xi_{N}$. The reason we have this ``two-sided'' condition is that we will use the processes $\xi_{(-\infty,N)}$ and $\xi_{(-N,\infty)}$, which have invariant measure $\mu$ as well, to talk about $\xi_{N}$.
 
-Now, by similar reasoning as before,
+For $A \in F_b$ we have
 \begin{align*}
-  G_{N}(t+s) &= \sum_{A \neq \emptyset} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) = A] \\
-  &\geq \sum_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) = A] \\
-  &\geq \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}]
+  %G_{N}(t+s) &= \sum_{A \neq \emptyset} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) = A] \\
+  %&\geq \sum_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) = A] \\
+  %&\geq \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}]
+  G_{N}(t+s)
+  \geq \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}]
 \end{align*}
 (We assume that $A \ins [-N,N]$ when such an assumption is necessary).
 
-Therefore,
+After some simple algebra we get the following bound:
 \begin{align*}
-  G_{N}(t)G_{N}(s) - G_{N}(t+s) \leq& \; G_{N}(t)G_{N}(s) - \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}] \\
-  =& \; G_{N}(s)(G_{N}(t) - \min_{A \in F_{b}} G_{N}^{A}(t)) \\
-                                 &+ \min_{A \in F_{b}} G_{N}^{A}(t)(G_{N}(s) - \Prob[\xi(\beta_{N}s) \in F_{b}]) \\
-  \leq& \; (G_{N}(t) - \min_{A \in F_{b}} \Prob[\xi_{N}^{A}(\beta_{N}t) \neq \emptyset]) \\
-                                 &+ \Prob[\xi_{N}(\beta_{N}s) \neq \emptyset, \xi_{N}(\beta_{N}s) \notin F_{b}]
+  G_{N}(t)G_{N}(s) - G_{N}(t+s) \leq& G_{N}(t) - \min_{A \in F_{b}} \Prob[\xi_{N}^{A}(\beta_{N}t) \neq \emptyset]+ \Prob[\xi_{N}(\beta_{N}s) \neq \emptyset, \xi_{N}(\beta_{N}s) \notin F_{b}]
 \end{align*}
+%\begin{align*}
+%  G_{N}(t)G_{N}(s) - G_{N}(t+s) \leq& \; G_{N}(t)G_{N}(s) - \min_{A \in F_{b}} G_{N}^{A}(t) \Prob[\xi_{N}(\beta_{N}s) \in F_{b}] \\
+%  =& \; G_{N}(s)(G_{N}(t) - \min_{A \in F_{b}} G_{N}^{A}(t)) \\
+%                                 &+ \min_{A \in F_{b}} G_{N}^{A}(t)(G_{N}(s) - \Prob[\xi(\beta_{N}s) \in F_{b}]) \\
+%  \leq& \; (G_{N}(t) - \min_{A \in F_{b}} \Prob[\xi_{N}^{A}(\beta_{N}t) \neq \emptyset]) \\
+%                                 &+ \Prob[\xi_{N}(\beta_{N}s) \neq \emptyset, \xi_{N}(\beta_{N}s) \notin F_{b}]
+%\end{align*}
 
 We will have finished if for any $\ep > 0$, we can find $b(\ep)$ and $N(\ep) > b(\ep)$  such that for $N \geq N(\ep)$ and $A \in F_{b}$, we have both
 \begin{align}
@@ -191,14 +202,17 @@ We will have finished if for any $\ep > 0$, we can find $b(\ep)$ and $N(\ep) > b
 
 We tackle \eref{eq:firstineq} first. Remember that $\xi_{N}(t)$ and $\xi_{N}^{A}$ are defined on the same percolation structure. Therefore, $\xi_{N}(t) \supset \xi_{N}^{A}(t)$, so we have
 \[ \Prob[\xi_{N}(\beta_{N} t) \neq \emptyset] - \Prob[\xi_{N}(\beta_{N} t) \neq \emptyset] = \Prob[\xi_{N}(\beta_{N} t) \neq \emptyset, \xi_{N}^{A}(\beta_{N} t) = \emptyset] \leq \Prob[T_{N} \neq T_{N}^{A}] \]
-The intuition for why the right hand side of this is small is that once $\xi_{N}(t_{0}) = \xi_{N}^{A}(t_{0})$, then for all $t > t_{0}$, $\xi_{N}(t) = \xi_{N}^{A}(t)$. Therefore, as long as the event $\xi_{N}(t_{0}) = \xi_{N}^{A}(t_{0})$ happens before $T_{N}^{A}$, we will have $T_{N}^{A} = T_{N}$. Let $E$ be this event; we must show that $\Prob(E) > 1 - \ep$.
+%The intuition for why the right hand side of this is small is that once $\xi_{N}(t_{0}) = \xi_{N}^{A}(t_{0})$, then for all $t > t_{0}$, $\xi_{N}(t) = \xi_{N}^{A}(t)$. Therefore, as long as the event $\xi_{N}(t_{0}) = \xi_{N}^{A}(t_{0})$ happens before $T_{N}^{A}$, we will have $T_{N}^{A} = T_{N}$. Let $E$ be this event; we must show that $\Prob(E) > 1 - \ep$.
+%
 
-As $\lambda > \lambda_{c}$, we can find $n(\ep)$ such that
+Set $E = \{T^A_N = T_N\}$. As $\lambda > \lambda_{c}$, we can find $n(\ep)$ such that
 \[ \mu(B \st B \cap [1,n(\ep)] = \emptyset) \leq \frac{\ep}{2} \]
 
 Then take $b = b(\ep)$ such that $n(\ep) \leq b \cdot \rho/2$. For $A \in F_{b}$, $\abs{A \cap [-b,-1]} \geq b \cdot \rho/2 \geq n(\ep)$, so
 \[ \Prob[T_{[-N,\infty)}^{A \cap [-b,-1]} = \infty] \geq \Prob[T_{[-N,\infty]}^{[-N,\ldots,-N+n(\ep)]} = \infty] \geq 1 - \frac{\ep}{2} \]
-TODO give argument for the first inequality. The second inequality follows from duality and monotone convergence.
+First inequality follows from the fact that $A \cap [-b,-1]$ is at least as spread out as $[-N,\ldots,-N+n(\ep)]$. A process which is more spread out has more chances of infecting 
+healthy individuals, and so survives longer.
+The second inequality follows from duality and monotone convergence.
 
 Similarly, $\Prob[T_{(-\infty,N]}^{A \cap [1,b]} = \infty] \geq 1 - \frac{\ep}{2}$. Let $E'$ be the event that both of these stopping times are infinite; clearly $P(E') \geq 1 - \ep$. It remains to show that $E \supset E'$.
 
@@ -223,7 +237,6 @@ We can minimize $\xi(\beta_{N}s) \in D_{b}$ by picking $b > b''(\ep)$ sufficient
                                 &+ \Prob[\min \xi_{N}(\beta_{N}s) \geq -N + L, \xi_{N}(\beta_{N}s) \neq \emptyset] \\
                                 &+ \Prob[\max \xi_{N}(\beta_{N}s) \leq N - L, \xi_{N}(\beta_{N}s) \neq \emptyset]
 \end{align*}
-
 By what we noted earlier, the first term is less than $\Prob(\xi(\beta_{N}s) \in D_{b})$; pick $b$ such that this is less than $\frac{\ep}{3}$.
 
 It remains to minimize the last two terms; by symmetry we only show how to minimize the first. Using a percolation structure argument, it is easy to show that as long as $\xi_{N}(\beta_{N}s) \neq \emptyset$, $\min \xi_{N}(t) = \min \xi_{[-N,\infty)}$. Therefore,
@@ -262,7 +275,7 @@ Notice that $L$ does not depend on $N$. Thus, since we chose to grow $N \rightar
  $N$ we can consider.
 
  We're now ready to give a simplified formulation of what we mean by ``quasi-stationarity''
-    \begin{theorem}
+ \begin{theorem} [from \cite{schonmann}]
         If $\lambda > \lambda^*$ there is a sequence $\{R_N\}_{N \in \mathbb{N}} \subset \mathbb{R_+}$ such that:
         \begin{itemize}
             \item $R_N/\beta_N \rightarrow 0$ as $N\rightarrow \infty$
@@ -310,8 +323,8 @@ that do not intersect $[N-L, N]$ very unlikely. As a final stroke, we use transl
         \mu_{[0, \infty)}\left( \left\{ A : A \cap [0,L] = \varnothing \right\} \right) \leq \varepsilon/(16\norm{f})
     \]
 This concludes our overview of the proof of Theorem 2.
+
+\printbibliography
         
-
-
 \end{document}
 
