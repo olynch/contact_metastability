@@ -53,7 +53,7 @@
 
 \begin{frame}{Informal Metastability}
   \begin{itemize}
-    \item Markov process $X_{N}(t)$
+    \item Markov process $\xi_{N}(t) \ins \integer$, ``infected states at time $t$''
     \pause
     \item As $N$ goes to $\infty$, looks like figure~\ref{fig:coarse_grain}.
   \end{itemize}
@@ -119,12 +119,18 @@
   \begin{itemize}
     \item $\xi_{B}^{A}(t)$ is the set of $x \in B$ such that there is a path $(y,0) \to (x,t)$ with $y \in A$ and the path not leaving $B$
           \pause
+    \item Superscript: ``starts in'', subscript: ``contained in''
+          \pause
+    \item If $B$ is omitted, assumed to be $\integer$. If $A$ is omitted, assumed to be $B$.
+          \pause
     \item Special cases
     \begin{itemize}
       \item $\xi_{N}(t) = \xi_{[-N,N]}(t)$
       \item $\xi_{[-N,\infty)}(t)$
       \item $\xi_{(-\infty,N\rb}(t)$
     \end{itemize}
+          \pause
+    \item We are interested in metastability for $\xi_{N}(t)$, with trap state $\emptyset$.
   \end{itemize}
 \end{frame}
 
@@ -137,16 +143,22 @@
 \subsection{Toolbox}
 
 \begin{frame}{Critical $\lambda$}
-  \begin{proposition}
-    There exists $\lambda_{c}$ such that for $\lambda < \lambda_{c}$, $\xi(t)$ has only one invariant measure, which is concentrated at $\emptyset$. For $\lambda > \lambda_{c}$, there is also another extremal invariant measure, which we call $\mu$, which is obtained by time-averaging $\xi(t)$. This also holds for $\xi_{[-N,\infty)}$ and $\xi_{(-\infty,N\rb}$
-  \end{proposition}
+  \begin{itemize}
+    \item Survival/extinction of $\xi(t)$ depends on infection rate $\lambda$
+          \pause
+    \item For $\lambda < \lambda_{c}$, goes extinct in finite time a.s. (unique ergodic measure $\delta_{\emptyset}$)
+          \pause
+    \item For $\lambda > \lambda_{c}$, two extremal invariant measures: $\delta_{\emptyset}$ and $\mu$
+          \pause
+    \item This also holds for $\xi_{[-N,\infty)}(t)$ and $\xi_{(-\infty,N]}(t)$
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Monotone Convergence}
   \begin{itemize}
     \item $\Prob(\xi^{A}(t) \cap B \neq \emptyset)$ is a nonincreasing function of $t$.
       \pause
-    \item Converges to $\mu_{B}(\eta \st \eta \cap A \neq \emptyset)$, where $\mu_{B}$ is the invariant measure of $\xi$ started in state $B$.
+    \item Converges to $\mu_{A}(\set{\eta \st \eta \cap B \neq \emptyset})$, where $\mu_{B}$ is the invariant measure of $\xi$ started in state $B$.
   \end{itemize}
 \end{frame}
 
@@ -166,9 +178,10 @@
 
 \begin{frame}{Consequence of Monotone Convergence + Self-duality}
   \begin{align*}
-    \Prob(\xi^{A}(t) \neq \emptyset, \forall t > 0) &= \limas_{t \to \infty} \Prob(\xi^{A}(t) \neq \emptyset) \\
-                                 &= \limas_{t \to \infty} \Prob(\xi(t) \cap A \neq \emptyset) \\
-                                 &= \mu(\eta \st \eta \cap A \neq \emptyset)
+    \Prob(\xi^{A}(t) \neq \emptyset, \forall t > 0) &= \limas_{s \to \infty} \Prob(\xi^{A}(t) \neq \emptyset, \forall s \geq t > 0) \\
+                                 &= \limas_{s \to \infty} \Prob(\xi^{A}(s) \neq \emptyset) \\
+                                 &= \limas_{s \to \infty} \Prob(\xi(s) \cap A \neq \emptyset) \\
+                                 &= \mu(\set{\eta \st \eta \cap A \neq \emptyset})
   \end{align*}
 \end{frame}
 
@@ -202,7 +215,7 @@
                   \pause
             \item Self-duality
                   \pause
-            \item How to stay alive in the cruel, hard world of the contact process: be big!
+            \item How an infection can persist forever with high probability: it has to start out with enough sites infected
           \end{itemize}
   \end{itemize}
 \end{frame}
@@ -217,7 +230,8 @@
 
 \begin{frame}{Goals}
   \begin{theorem}
-    If $T_{N}$ is hitting time of $\emptyset$, then
+    Let \[ T_{N} = \inf\set{t \st \xi_{N}(t) = \emptyset} \]
+    Then for $\lambda > \lambda_{c}$
     \[ \frac{T_{N}}{\E T_{N}} \to[w] \expDist(1) \]
     That is, it converges to $\expDist(1)$ \emph{in distribution}.
   \end{theorem}
@@ -234,7 +248,7 @@
     \item Use $\beta_{N}$ instead of $\E T_{N}$, where $\beta_{N}$ is unique number such that
     \[ \Prob(T_{N} > \beta_{N}) = \e^{-1} \]
           \pause
-    \item Let $G_{N}(t) = \Prob\left[ \frac{T_{N}}{\beta_{N}} > t\right]$ be CDF for $T_{N} / \beta_{N}$
+    \item Let $G_{N}(t) = \Prob\left[ \frac{T_{N}}{\beta_{N}} > t\right]$ be the tail distribution for $T_{N} / \beta_{N}$
           \pause
     \item(note that $\set{ \frac{T_N}{\beta_N} > t} = \set{\xi_{N}(\beta_{N}t) \neq \emptyset}$)
           \pause
@@ -248,7 +262,7 @@
   \begin{itemize}
     \item Use a set $F_{b} \ins \powerset([-N,N])$ of ``sufficiently dense'' initial conditions
     \pause
-    \item If we are not in $F_{b}$, then we are most likely already dead. Therefore, the probability that we end up in $F_{b}$ at time $\beta_{N}t$ is approximately $G_{N}(t)$
+    \item If we are not in $F_{b}$, then we are most likely already extinct. Therefore, the probability that we end up in $F_{b}$ at time $\beta_{N}t$ is approximately $G_{N}(t)$
     \pause
     \item Starting from $A \in F_{b}$ is ``just as good'' as starting from $[-N,N]$, so if we end up in $A \in F_{b}$ at time $\beta_{N}t$, then we have approximately $G_{N}(s)$ chance of still being alive at time $\beta_{N}(s+t)$.
     \pause
@@ -270,11 +284,11 @@
 
 \begin{frame}
   \begin{itemize}
-    \item Let $n = n(\ep)$ large enough so that starting out with $n$ elements will let you survive forever with probability $1 - \ep/2$
+    \item Let $n = n(\ep)$ large enough so that starting out with $n$ infected sites will let the epidemic persist forever with probability $1 - \ep/2$
           \pause
-    \item Then if $b \rho/2 > n(\ep)$, for $A$ in $F_{b}$ starting in $[1,b] \cap A$ or $[-b,-1] \cap A$ will let you survive forever with probability $1 - \ep/2$
+    \item Then if $b \rho/2 > n(\ep)$, for $A$ in $F_{b}$ starting in $[1,b] \cap A$ or $[-b,-1] \cap A$ will persist forever with probability $1 - \ep/2$
           \pause
-    \item Let $E$ be the event that $\xi_{[-N,\infty)}^{A\cap[-b,-1]}(t)$ and $\xi_{(-\infty,N]}^{A \cap [1,b]}(t)$ survive forever (the invariant distribution for $[-N,\infty)$ is the same as that for $\integer$)
+    \item Let $E$ be the event that $\xi_{[-N,\infty)}^{A\cap[-b,-1]}(t)$ and $\xi_{(-\infty,N]}^{A \cap [1,b]}(t)$ persist forever (the invariant distribution for $[-N,\infty)$ is the same as that for $\integer$)
           \pause
     \item $\Prob(E) > 1 - \ep$
           \pause
