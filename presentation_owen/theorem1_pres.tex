@@ -72,7 +72,7 @@
       \item Asymptotically as $N \to \infty$, $T_{N}$ has an exponential distribution.
     \end{itemize}
     \pause
-    \item Quasi-stationary distribution before hitting time
+    \item Quasi-stationary distribution before hitting time (not discussed in this presentation)
     \begin{itemize}
       \item There is a ``approximate invariant distribution'' $\mu$
       \item Up until $T_{N}$, temporal means of $X_{N}(t)$ approximate $\mu$
@@ -83,6 +83,7 @@
 \subsection{Contact Process}
 
 \begin{frame}{Contact Process, Generator Definition}
+  (Review from before)
   \begin{itemize}
     \item $\xi(t)$ is a Markov process taking values in $2^{\integer} = \powerset(\integer)$
     \item Characterized by
@@ -109,7 +110,7 @@
     \pause
     \item $\xi^{A}(t)$ is the set of $x \in \integer$ such that there is a path $(y,0) \to (x,t)$ for $y \in A$.
     \pause
-    \item A path is... \pause easier to see intuitively in than write down formally
+    \item A path is... \pause easier to see intuitively in than write down formally, and already covered by Michael
     \pause
     \item Percolation structure is very useful for proofs
   \end{itemize}
@@ -148,9 +149,9 @@
           \pause
     \item For $\lambda < \lambda_{c}$, goes extinct in finite time a.s. (unique ergodic measure $\delta_{\emptyset}$)
           \pause
-    \item For $\lambda > \lambda_{c}$, two extremal invariant measures: $\delta_{\emptyset}$ and $\mu$
+    \item For $\lambda > \lambda_{c}$, two extremal invariant measures: $\delta_{\emptyset}$ and $\mu$ (upper and lower invariant measures).
           \pause
-    \item This also holds for $\xi_{[-N,\infty)}(t)$ and $\xi_{(-\infty,N]}(t)$
+    \item This also holds for $\xi_{[-N,\infty)}(t)$ and $\xi_{(-\infty,N]}(t)$ with the same $\lambda_c$.
   \end{itemize}
 \end{frame}
 
